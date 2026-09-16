@@ -109,17 +109,17 @@ export default function SectionForm({ section, updateAction }: { section: any, u
 
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between">
-              <h4 className="text-white font-semibold">Locations</h4>
+              <h4 className="text-white font-semibold">Locations / Cards</h4>
               <button
                 type="button"
                 onClick={() => {
                   const locations = [...(content.locations || [])]
-                  locations.push({ name: '', image: '', address: '' })
+                  locations.push({ name: '', image: '', address: '', link: '' })
                   setContent({ ...content, locations })
                 }}
                 className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors"
               >
-                + Add Location
+                + Add Card
               </button>
             </div>
             {(content.locations || []).map((_: any, i: number) => {
@@ -127,7 +127,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
               return (
                 <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="text-xs text-brandRed font-bold">LOCATION {i + 1}</div>
+                    <div className="text-xs text-brandRed font-bold">CARD {i + 1}</div>
                     <button
                       type="button"
                       onClick={() => {
@@ -140,37 +140,30 @@ export default function SectionForm({ section, updateAction }: { section: any, u
                       Remove
                     </button>
                   </div>
-                  <input type="text" placeholder="Location Name (e.g. Abuja, Nigeria)" value={loc.name || ''} onChange={(e) => handleArrayChange('locations', i, 'name', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                  <textarea placeholder="Office Address (e.g. Tsaro Africa Operations Center&#10;Central Business District, Abuja)" value={loc.address || ''} onChange={(e) => handleArrayChange('locations', i, 'address', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs text-textMuted mb-1">Latitude</label>
-                      <input type="text" placeholder="e.g. 9.0579" value={loc.coords?.[0] ?? ''} onChange={(e) => {
-                        const locations = [...(content.locations || [])];
-                        const coords = locations[i]?.coords || [0, 0];
-                        locations[i] = { ...locations[i], coords: [parseFloat(e.target.value) || 0, coords[1]] };
-                        setContent({ ...content, locations });
-                      }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-textMuted mb-1">Longitude</label>
-                      <input type="text" placeholder="e.g. 7.4951" value={loc.coords?.[1] ?? ''} onChange={(e) => {
-                        const locations = [...(content.locations || [])];
-                        const coords = locations[i]?.coords || [0, 0];
-                        locations[i] = { ...locations[i], coords: [coords[0], parseFloat(e.target.value) || 0] };
-                        setContent({ ...content, locations });
-                      }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                    </div>
+                  
+                  <div>
+                    <label className="block text-xs text-textMuted mb-1">Region / Location Name</label>
+                    <input type="text" placeholder="e.g. Americas" value={loc.name || ''} onChange={(e) => handleArrayChange('locations', i, 'name', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                   </div>
-                  <p className="text-xs text-textMuted">Tip: Search &quot;[city name] coordinates&quot; on Google to find lat/lng values for the map pin.</p>
+                  
+                  <div>
+                    <label className="block text-xs text-textMuted mb-1">Background Image URL</label>
+                    <ImageUpload value={loc.image || ''} onChange={(url) => handleArrayChange('locations', i, 'image', url)} placeholder="Leave blank for black background" />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-textMuted mb-1">Details / Sub-agencies</label>
+                    <textarea placeholder="e.g. Centerra" value={loc.address || ''} onChange={(e) => handleArrayChange('locations', i, 'address', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-textMuted mb-1">Action Link URL (optional)</label>
+                    <input type="text" placeholder="e.g. /contact" value={loc.link || ''} onChange={(e) => handleArrayChange('locations', i, 'link', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                  </div>
+                  
                 </div>
               )
             })}
-            {(!content.locations || content.locations.length === 0) && (
-              <div className="text-center py-4 text-textMuted text-sm border border-white/5 border-dashed rounded">
-                No locations yet. Click &quot;+ Add Location&quot; to get started.
-              </div>
-            )}
           </div>
         </>
       )}
