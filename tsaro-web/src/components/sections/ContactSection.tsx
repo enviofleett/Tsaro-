@@ -62,7 +62,7 @@ export default function ContactSection({ content }: { content?: any }) {
   }
 
   return (
-    <section id="contact-us" className="py-24 px-6 md:px-12 bg-obsidian relative border-t border-white/5">
+    <section id="contact" className="py-24 px-6 md:px-12 bg-obsidian relative border-t border-white/5">
         <div className="max-w-7xl mx-auto">
             
             <div className="bg-charcoal rounded-2xl p-8 sm:p-12 md:p-16 border border-white/10 shadow-2xl relative">

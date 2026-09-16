@@ -52,7 +52,7 @@ export default function ResearchInsights({ content }: { content?: any }) {
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
-    <section className="py-24 px-6 md:px-12 bg-obsidian relative">
+    <section id="intelligence" className="py-24 px-6 md:px-12 bg-obsidian relative">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}

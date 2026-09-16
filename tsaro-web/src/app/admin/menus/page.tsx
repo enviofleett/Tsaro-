@@ -46,6 +46,16 @@ export default async function MenusManager() {
     revalidatePath('/admin/menus')
   }
 
+  async function editMenuItem(formData: FormData) {
+    'use server'
+    const supabase = await createClient()
+    await supabase.from('menu_items').update({
+      label: formData.get('label'),
+      url: formData.get('url')
+    }).eq('id', formData.get('id'))
+    revalidatePath('/admin/menus')
+  }
+
   async function deleteMenuItem(formData: FormData) {
     'use server'
     const supabase = await createClient()
@@ -60,7 +70,6 @@ export default async function MenusManager() {
     const direction = formData.get('direction') as string
     const menu_id = formData.get('menu_id') as string
 
-    // Only swap within the same level (same parent)
     const { data: item } = await supabase.from('menu_items').select('parent_id').eq('id', id).single()
     const parent_id = item?.parent_id
 
@@ -87,7 +96,7 @@ export default async function MenusManager() {
   const topLevelItems = menuItems.filter(i => !i.parent_id)
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-5xl">
       <h1 className="text-3xl font-bold text-white mb-8">Navigation Menus</h1>
 
       {!menu ? (
@@ -100,8 +109,11 @@ export default async function MenusManager() {
         </div>
       ) : (
         <div className="bg-charcoal border border-white/10 rounded-lg overflow-hidden shadow-2xl">
-          <div className="bg-deepGray/50 border-b border-white/10 p-6">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">Main Top Navigation</h2>
+          <div className="bg-deepGray/50 border-b border-white/10 p-6 flex justify-between items-center">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">Main Top Navigation</h2>
+              <p className="text-textMuted text-sm mt-1">Click any label or URL to edit it, then click Save.</p>
+            </div>
           </div>
 
           <div className="p-6">
@@ -112,7 +124,7 @@ export default async function MenusManager() {
                   <div key={item.id} className="bg-deepGray/40 border border-white/5 rounded-lg overflow-hidden">
                     {/* Top Level Item */}
                     <div className="flex items-center justify-between p-4 group hover:bg-white/5 transition-colors">
-                      <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-6 flex-1">
                         <div className="flex flex-col gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
                           <form action={moveMenuItem}>
                             <input type="hidden" name="id" value={item.id} />
@@ -127,14 +139,18 @@ export default async function MenusManager() {
                             <button type="submit" disabled={idx === topLevelItems.length - 1} className="hover:text-white disabled:opacity-30 block"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg></button>
                           </form>
                         </div>
-                        <div>
-                          <div className="font-semibold text-white text-[15px]">{item.label}</div>
-                          <div className="text-textMuted text-xs mt-0.5 font-mono">{item.url}</div>
-                        </div>
+                        
+                        <form action={editMenuItem} className="flex-1 flex gap-4 items-center">
+                          <input type="hidden" name="id" value={item.id} />
+                          <input type="text" name="label" defaultValue={item.label} className="font-semibold text-white text-[15px] bg-transparent border border-transparent focus:border-white/20 focus:bg-black/20 focus:outline-none rounded px-2 py-1 w-1/3 hover:bg-black/10 transition-colors" />
+                          <input type="text" name="url" defaultValue={item.url} className="text-textMuted text-xs font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/20 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/10 transition-colors" />
+                          <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-white/10 hover:bg-white text-white hover:text-black rounded opacity-0 group-hover:opacity-100 transition-all focus:opacity-100">Save</button>
+                        </form>
                       </div>
+
                       <form action={deleteMenuItem}>
                         <input type="hidden" name="id" value={item.id} />
-                        <button type="submit" className="text-brandRed hover:text-red-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 bg-red-500/10 rounded">Remove</button>
+                        <button type="submit" className="text-brandRed hover:text-red-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 bg-red-500/10 rounded ml-4">Remove</button>
                       </form>
                     </div>
 
@@ -143,7 +159,7 @@ export default async function MenusManager() {
                       <div className="pl-14 pr-4 pb-4 space-y-2">
                         {subItems.map((sub, sIdx) => (
                           <div key={sub.id} className="flex items-center justify-between bg-black/20 border border-white/5 p-3 rounded group/sub hover:border-white/20 transition-colors">
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 flex-1">
                               <div className="flex flex-col gap-1 opacity-10 group-hover/sub:opacity-100 transition-opacity">
                                 <form action={moveMenuItem} className="h-3 overflow-hidden">
                                   <input type="hidden" name="id" value={sub.id} />
@@ -158,17 +174,22 @@ export default async function MenusManager() {
                                   <button type="submit" disabled={sIdx === subItems.length - 1} className="hover:text-white disabled:opacity-30"><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg></button>
                                 </form>
                               </div>
-                              <div>
-                                <div className="font-medium text-white/90 text-sm flex items-center gap-2">
-                                  <svg className="w-3 h-3 text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-                                  {sub.label}
-                                </div>
-                                <div className="text-textMuted text-[10px] mt-0.5 font-mono ml-5">{sub.url}</div>
+
+                              <div className="flex items-center gap-2">
+                                <svg className="w-3 h-3 text-textMuted shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                               </div>
+                              
+                              <form action={editMenuItem} className="flex-1 flex gap-3 items-center">
+                                <input type="hidden" name="id" value={sub.id} />
+                                <input type="text" name="label" defaultValue={sub.label} className="font-medium text-white/90 text-sm bg-transparent border border-transparent focus:border-white/20 focus:bg-black/40 focus:outline-none rounded px-2 py-1 w-1/3 hover:bg-black/20 transition-colors" />
+                                <input type="text" name="url" defaultValue={sub.url} className="text-textMuted text-[10px] font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/40 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/20 transition-colors" />
+                                <button type="submit" className="text-xs font-semibold px-2 py-1 bg-white/10 hover:bg-white text-white hover:text-black rounded opacity-0 group-hover/sub:opacity-100 transition-all focus:opacity-100">Save</button>
+                              </form>
                             </div>
+
                             <form action={deleteMenuItem}>
                               <input type="hidden" name="id" value={sub.id} />
-                              <button type="submit" className="text-brandRed text-xs font-medium opacity-0 group-hover/sub:opacity-100 transition-opacity">Delete</button>
+                              <button type="submit" className="text-brandRed text-xs font-medium opacity-0 group-hover/sub:opacity-100 transition-opacity ml-4">Delete</button>
                             </form>
                           </div>
                         ))}
