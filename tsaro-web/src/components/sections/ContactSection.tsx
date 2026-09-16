@@ -51,6 +51,16 @@ export default function ContactSection({ content }: { content?: any }) {
     }
   };
 
+  let displayHeadline = content?.headline || "Contact Command";
+  let displaySubheadline = content?.subheadline || "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context.";
+
+  if (displayHeadline.includes("Intelligence Briefs")) {
+    displayHeadline = "Contact Command";
+  }
+  if (displaySubheadline.includes("geopolitical")) {
+    displaySubheadline = "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context.";
+  }
+
   return (
     <section id="contact-us" className="py-24 px-6 md:px-12 bg-obsidian relative border-t border-white/5">
         <div className="max-w-7xl mx-auto">
@@ -60,10 +70,10 @@ export default function ContactSection({ content }: { content?: any }) {
                     
                     <div className="lg:col-span-5 pt-4">
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 mb-6 tracking-tight">
-                            {content?.headline || "Contact Command"}
+                            {displayHeadline}
                         </h2>
                         <p className="text-textLight text-base leading-relaxed mb-8">
-                            {content?.subheadline || "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context."}
+                            {displaySubheadline}
                         </p>
                         
                         <div className="space-y-6 font-mono text-xs text-textMuted mt-12">
