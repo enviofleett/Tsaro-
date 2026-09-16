@@ -26,11 +26,8 @@ export default function CareersPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-20">
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6">
-              <span className="w-2 h-2 rounded-full bg-brandRed animate-pulse"></span>
-              <span className="text-[10px] font-mono text-textLight uppercase tracking-widest">Neural Recruitment Active</span>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 tracking-tight mb-6">
+            
+            <h1 className="text-5xl md:text-7xl font-sans font-bold text-white tracking-tight mb-6">
               Build the Future of <br className="hidden md:block" />
               <span className="text-brandRed">Global Defense</span>
             </h1>
@@ -39,20 +36,7 @@ export default function CareersPage() {
             </p>
           </div>
 
-          {/* AI-Inspired Core Values */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
-            {[
-              { id: '01', title: 'Algorithmic Precision', desc: 'Every tactical decision is backed by petabytes of real-time geospatial and threat-vector data.' },
-              { id: '02', title: 'Radical Autonomy', desc: 'We deploy small, highly-empowered units that operate independently across theaters.' },
-              { id: '03', title: 'Asymmetric Impact', desc: 'Your code and your strategy directly dictate the safety of sovereign infrastructures.' }
-            ].map((v) => (
-              <div key={v.id} className="bg-[#212126]/80 backdrop-blur-sm border border-white/10 p-8 rounded-xl hover:border-brandRed/50 transition-colors group">
-                <div className="text-4xl font-mono text-white/10 font-bold mb-4 group-hover:text-brandRed/20 transition-colors">{v.id}</div>
-                <h3 className="text-xl font-semibold text-white mb-3">{v.title}</h3>
-                <p className="text-sm text-textMuted leading-relaxed">{v.desc}</p>
-              </div>
-            ))}
-          </div>
+
 
           {/* Open Positions */}
           <div>
