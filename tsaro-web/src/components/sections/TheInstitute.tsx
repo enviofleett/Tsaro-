@@ -20,7 +20,7 @@ export default function TheInstitute({ content }: { content?: any }) {
         {
           title: 'Tsaro Academy',
           description: 'Professional certification and command-tier training for the institutions we work with — run as its own school, not a page on this site.',
-          link_url: 'https://academy.tsaroglobal.com',
+          link_url: '/academy',
           link_text: 'VISIT ACADEMY',
         },
         {
