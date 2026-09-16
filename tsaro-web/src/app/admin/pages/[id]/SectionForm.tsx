@@ -790,7 +790,21 @@ export default function SectionForm({ section, updateAction }: { section: any, u
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Programs</h4><button type="button" onClick={() => { const programs = [...(content.programs || [])]; programs.push({}); setContent({ ...content, programs }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Program</button></div>
             {(content.programs || []).map((p: any, i: number) => (
               <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
-                <div className="flex items-center justify-between mb-2"><div className="text-xs text-brandRed font-bold">PROGRAM {i + 1}</div><button type="button" onClick={() => { const programs = [...(content.programs || [])]; programs.splice(i, 1); setContent({ ...content, programs }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button></div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="text-xs text-brandRed font-bold">PROGRAM {i + 1}</div>
+                    <label className="flex items-center gap-1 text-xs text-textLight bg-black/20 px-2 py-1 rounded cursor-pointer hover:bg-black/40">
+                      <input type="checkbox" checked={p.isFavorite || false} onChange={(e) => {
+                        // Uncheck others
+                        const programs = [...(content.programs || [])].map(prog => ({ ...prog, isFavorite: false }));
+                        programs[i].isFavorite = e.target.checked;
+                        setContent({ ...content, programs });
+                      }} className="accent-brandRed" />
+                      ⭐ Featured Flagship
+                    </label>
+                  </div>
+                  <button type="button" onClick={() => { const programs = [...(content.programs || [])]; programs.splice(i, 1); setContent({ ...content, programs }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button>
+                </div>
                 <select value={p.type || ''} onChange={(e) => handleArrayChange('programs', i, 'type', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm">
                   <option value="">Select Category...</option>
                   <option value="kinetic">Kinetic & Weapons</option>

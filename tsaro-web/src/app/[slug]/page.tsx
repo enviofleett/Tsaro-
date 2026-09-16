@@ -59,7 +59,29 @@ export default async function DynamicPage({ params }: { params: { slug: string }
           if (section.section_type === 'pull_quote') return <PullQuote key={section.id} content={section.content} />
           if (section.section_type === 'cta_banner') return <CtaBanner key={section.id} content={section.content} />
           if (section.section_type === 'academy_hero') return <AcademyHero key={section.id} content={section.content} />
-          if (section.section_type === 'academy_flagship') return <AcademyFlagship key={section.id} content={section.content} />
+          if (section.section_type === 'academy_flagship') {
+            const catalogSection = sections?.find((s: any) => s.section_type === 'academy_catalog')
+            let favoriteContent = section.content as any;
+            if (catalogSection && (catalogSection.content as any).programs) {
+              const favorite = (catalogSection.content as any).programs.find((p: any) => p.isFavorite)
+              if (favorite) {
+                favoriteContent = {
+                  ...favoriteContent,
+                  badge: favorite.badge || favoriteContent.badge,
+                  image: favorite.image || favoriteContent.image,
+                  imageBadge: favorite.format ? `${favorite.format} • ${favorite.duration}` : favoriteContent.imageBadge,
+                  code: favorite.code || favoriteContent.code,
+                  codeType: favorite.type || favoriteContent.codeType,
+                  title: favorite.title || favoriteContent.title,
+                  desc: favorite.desc || favoriteContent.desc,
+                  startDate: favorite.startDate || favorite.date || favoriteContent.startDate,
+                  endDate: favorite.endDate || favoriteContent.endDate,
+                  timeRange: favorite.timeRange || favoriteContent.timeRange,
+                }
+              }
+            }
+            return <AcademyFlagship key={section.id} content={favoriteContent} />
+          }
           if (section.section_type === 'academy_catalog') return <AcademyCatalog key={section.id} content={section.content} />
           if (section.section_type === 'academy_methodology') return <AcademyMethodology key={section.id} content={section.content} />
           if (section.section_type === 'text_block') {
