@@ -1,102 +1,81 @@
-"use client";
-
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
-// Dynamically import the Globe to disable SSR (SVG map requires browser APIs)
-const DynamicGlobe = dynamic(() => import('./Globe'), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full rounded-full border border-white/10 animate-pulse bg-deepGray flex items-center justify-center">
-      <div className="text-white/30 text-sm">Loading map…</div>
-    </div>
-  ),
-});
-
-interface Location {
-  name: string;
-  image: string;
-  address: string;
-  coords: [number, number];
-}
-
-function getCoordsFromName(name: string): [number, number] {
-  const n = name.toLowerCase();
-  if (n.includes('orlando')) return [28.5383, -81.3792];
-  if (n.includes('abuja')) return [9.0579, 7.4951];
-  if (n.includes('europe') || n.includes('london')) return [51.5072, -0.1276];
-  return [0, 0];
-}
-
-const DEFAULT_LOCATIONS: Location[] = [
-  { name: "Abuja, Nigeria", image: "", address: "Tsaro Africa Operations Center\nCentral Business District, Abuja", coords: [9.0579, 7.4951] },
-  { name: "Orlando, FL", image: "", address: "Tsaro North America HQ\nDowntown Orlando, Florida", coords: [28.5383, -81.3792] },
-  { name: "Europe", image: "", address: "Strategic Partnership Desk\nEuropean Union", coords: [51.5072, -0.1276] },
-];
+import Link from 'next/link';
 
 export default function WhereWeOperate({ content }: { content?: any }) {
-  const rawLocations = content?.locations?.length ? content.locations : DEFAULT_LOCATIONS;
-  const locations: Location[] = rawLocations.map((loc: any) => ({
-    name: loc.name || "",
-    image: loc.image || "",
-    address: loc.address || "",
-    coords: loc.coords || getCoordsFromName(loc.name || ""),
-  }));
-
   const headline = content?.headline || "Where we operate";
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  
+  // Default fallback matching the new client mockup
+  const regions = (content?.locations && content.locations.length > 0) 
+    ? content.locations.map((loc: any) => ({ ...loc, details: loc.details || loc.address })) 
+    : [
+        {
+          name: "Americas",
+          image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", // Earth from space focusing on americas approx
+          details: "",
+          link: "#"
+        },
+        {
+          name: "Europe & Middle East:",
+          image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=800&auto=format&fit=crop", // Earth focusing on europe approx
+          details: "",
+          link: "#"
+        },
+        {
+          name: "Indo-Pacific:",
+          image: "", // Blank black background
+          details: "Centerra\nTriple Canopy",
+          link: ""
+        }
+      ];
 
   return (
-    <section className="py-32 px-6 md:px-12 bg-charcoal relative overflow-hidden border-t border-white/5">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+    <section className="py-24 bg-[#0a0a0a] relative border-t border-white/5">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white mb-12 text-center lg:text-left">
+          {headline}
+        </h2>
 
-        {/* Left Side: Location List */}
-        <div className="lg:w-1/2 w-full z-10 flex flex-col">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08] mb-12 text-left">
-            {headline}
-          </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {regions.map((region: any, idx: number) => (
+            <div 
+              key={idx}
+              className={`relative h-[300px] sm:h-[400px] w-full group overflow-hidden ${!region.image ? 'bg-black border border-white/10' : ''}`}
+            >
+              {region.image && (
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url('${region.image}')` }}
+                >
+                  {/* Subtle dark gradient overlay so text is readable */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                </div>
+              )}
 
-          <div className="flex flex-col gap-6">
-            {locations.map((loc, idx) => (
-              <div
-                key={idx}
-                onClick={() => setActiveIdx(activeIdx === idx ? null : idx)}
-                onMouseEnter={() => setActiveIdx(idx)}
-                onMouseLeave={() => setActiveIdx(null)}
-                className={`p-6 rounded-lg border transition-all duration-300 cursor-pointer ${
-                  activeIdx === idx
-                    ? 'bg-deepGray border-brandRed/50 shadow-[0_0_30px_rgba(215,35,35,0.15)]'
-                    : 'bg-deepGray/40 border-white/5 hover:border-white/20'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`mt-1.5 w-2.5 h-2.5 rounded-full transition-all duration-300 ${activeIdx === idx ? 'bg-brandRed animate-pulse' : 'bg-white/20'}`} />
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{loc.name}</h3>
-                    {loc.address ? (
-                      <p className="text-textMuted text-sm leading-relaxed whitespace-pre-line">
-                        {loc.address}
+              <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                <div className="flex justify-between items-end w-full">
+                  <div className="text-white">
+                    <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+                      {region.name}
+                    </h3>
+                    {region.details && (
+                      <p className="text-sm text-white/80 whitespace-pre-line font-medium leading-relaxed">
+                        {region.details}
                       </p>
-                    ) : (
-                      <p className="text-textMuted text-sm italic">Contact for clearance details</p>
                     )}
                   </div>
+                  
+                  {region.link && (
+                    <a 
+                      href={region.link}
+                      className="w-10 h-10 rounded-full bg-[#0088cc] flex items-center justify-center text-white shrink-0 hover:bg-[#0099e6] transition-colors shadow-lg"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-
-        {/* Right Side: Globe Map */}
-        <div className="lg:w-1/2 w-full max-w-lg aspect-square relative flex items-center justify-center">
-          <div className="absolute inset-0 bg-brandRed/5 rounded-full blur-[100px] pointer-events-none" />
-          <DynamicGlobe
-            locations={locations}
-            activeIdx={activeIdx}
-            onLocationClick={(idx) => setActiveIdx(activeIdx === idx ? null : idx)}
-          />
-        </div>
-
       </div>
     </section>
   );
