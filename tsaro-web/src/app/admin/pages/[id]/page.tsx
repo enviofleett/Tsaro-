@@ -66,7 +66,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
       'operational_differentiator',
       'commitments',
       'institute',
-      'intelligence_briefs'
+      'contact_section'
     ]
 
     const inserts = defaultSections.map((type, index) => ({
@@ -147,7 +147,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
                 <option value="authority_bar">Authority Bar</option>
                 <option value="commitments">Commitments</option>
                 <option value="operational_differentiator">Operational Differentiator</option>
-                <option value="intelligence_briefs">Intelligence Briefs</option>
+                <option value="contact_section">Contact Form</option>
                 <option value="institute">The Institute</option>
               </select>
               <button type="submit" className="bg-white/10 hover:bg-white/20 px-4 py-1 rounded text-white font-medium text-sm transition-colors">

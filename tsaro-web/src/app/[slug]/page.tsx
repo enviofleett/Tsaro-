@@ -18,7 +18,7 @@ import AuthorityBar from '@/components/sections/AuthorityBar'
 import CapabilityGrid from '@/components/sections/CapabilityGrid'
 import WhereWeOperate from '@/components/sections/WhereWeOperate'
 import OperationalDifferentiator from '@/components/sections/OperationalDifferentiator'
-import IntelligenceBriefs from '@/components/sections/IntelligenceBriefs'
+import ContactSection from '@/components/sections/ContactSection'
 import ResearchInsights from '@/components/sections/ResearchInsights'
 import Commitments from '@/components/sections/Commitments'
 import TheInstitute from '@/components/sections/TheInstitute'
@@ -48,7 +48,7 @@ export default async function DynamicPage({ params }: { params: { slug: string }
           if (section.section_type === 'operational_differentiator') return <OperationalDifferentiator key={section.id} content={section.content} />
           if (section.section_type === 'commitments') return <Commitments key={section.id} content={section.content} />
           if (section.section_type === 'institute') return <TheInstitute key={section.id} content={section.content} />
-          if (section.section_type === 'intelligence_briefs') return <IntelligenceBriefs key={section.id} content={section.content} />
+          if (section.section_type === 'contact_section' || section.section_type === 'intelligence_briefs') return <ContactSection key={section.id} content={section.content} />
           if (section.section_type === 'research_insights') return <ResearchInsights key={section.id} content={section.content} />
 
           if (section.section_type === 'about_hero') return <AboutHero key={section.id} content={section.content} />
