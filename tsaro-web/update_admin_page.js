@@ -1,0 +1,101 @@
+const fs = require('fs');
+
+const pageFile = 'src/app/admin/pages/[id]/page.tsx';
+let content = fs.readFileSync(pageFile, 'utf8');
+
+// Insert moveSection server action
+const moveSectionAction = `
+  async function moveSection(formData: FormData) {
+    'use server'
+    const supabase = await createClient()
+    const section_id = formData.get('section_id') as string
+    const direction = formData.get('direction') as string
+    
+    const { data: sections } = await supabase.from('page_sections').select('id, sort_order').eq('page_id', id).order('sort_order')
+    if (!sections) return;
+
+    const currentIndex = sections.findIndex((s: any) => s.id === section_id);
+    if (currentIndex === -1) return;
+
+    const swapIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (swapIndex >= 0 && swapIndex < sections.length) {
+      const current = sections[currentIndex]
+      const swap = sections[swapIndex]
+      await supabase.from('page_sections').update({ sort_order: swap.sort_order }).eq('id', current.id)
+      await supabase.from('page_sections').update({ sort_order: current.sort_order }).eq('id', swap.id)
+    }
+    revalidatePath(\`/admin/pages/\${id}\`)
+  }
+`;
+
+content = content.replace(
+  `async function addSection(formData: FormData) {`,
+  `${moveSectionAction}\n\n  async function addSection(formData: FormData) {`
+);
+
+// Make sidebar sticky
+content = content.replace(
+  `className="lg:col-span-1 space-y-8"`,
+  `className="lg:col-span-1 space-y-8 sticky top-8"`
+);
+
+// Replace sections mapping with new details/summary structure
+const oldMapStart = `{sections?.map((section, idx) => (`
+const oldMapEnd = `</form>\n            </div>\n          )}`
+const newMap = `{sections?.map((section, idx) => (
+            <details key={section.id} className="group bg-charcoal border border-white/10 rounded-lg overflow-hidden capability-card mb-4" open={idx === 0}>
+              <summary className="flex justify-between items-center p-5 cursor-pointer list-none select-none bg-deepGray/20 hover:bg-deepGray/50 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="text-white/40 group-open:rotate-90 transition-transform duration-200">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-brandRed uppercase tracking-widest block mb-0.5">Section {idx + 1}</span>
+                    <h3 className="text-base font-semibold text-white leading-none">{formatSectionType(section.section_type)}</h3>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
+                  <form action={moveSection} className="inline">
+                    <input type="hidden" name="section_id" value={section.id} />
+                    <input type="hidden" name="direction" value="up" />
+                    <button type="submit" disabled={idx === 0} className="p-1.5 text-textMuted hover:text-white disabled:opacity-30 disabled:hover:text-textMuted transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 15l7-7 7 7"></path></svg></button>
+                  </form>
+                  <form action={moveSection} className="inline">
+                    <input type="hidden" name="section_id" value={section.id} />
+                    <input type="hidden" name="direction" value="down" />
+                    <button type="submit" disabled={idx === sections.length - 1} className="p-1.5 text-textMuted hover:text-white disabled:opacity-30 disabled:hover:text-textMuted transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg></button>
+                  </form>
+                  <div className="w-px h-5 bg-white/10 mx-3"></div>
+                  <form action={deleteSection} className="inline">
+                    <input type="hidden" name="section_id" value={section.id} />
+                    <button type="submit" className="text-xs px-3 py-1.5 bg-brandRed/10 text-brandRed hover:bg-brandRed rounded font-medium transition-colors">Remove</button>
+                  </form>
+                </div>
+              </summary>
+
+              <div className="p-6 border-t border-white/10 bg-charcoal">
+                <SectionForm section={section} updateAction={updateSectionContent} />
+              </div>
+            </details>
+          ))}
+
+          {(!sections || sections.length === 0) && (
+            <div className="text-center p-10 border border-white/10 border-dashed rounded-lg">
+              <p className="text-textMuted mb-6">No sections added yet. You can add them one by one, or populate the default Tsaro layout.</p>
+              <form action={populateDefaultLayout}>
+                <button type="submit" className="btn-primary-red px-6 py-2 rounded font-semibold text-sm">
+                  Populate Default Layout
+                </button>
+              </form>
+            </div>
+          )}`;
+
+const startIdx = content.indexOf(oldMapStart);
+const endIdx = content.indexOf(oldMapEnd) + oldMapEnd.length;
+
+if (startIdx !== -1 && endIdx !== -1) {
+  content = content.substring(0, startIdx) + newMap + content.substring(endIdx);
+}
+
+fs.writeFileSync(pageFile, content);
