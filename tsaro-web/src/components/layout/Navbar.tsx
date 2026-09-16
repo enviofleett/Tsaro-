@@ -29,6 +29,7 @@ export default async function Navbar() {
       { id: '2', label: 'Who We Serve', url: '/#about' },
       { id: '3', label: 'Insights', url: '/#intelligence' },
       { id: '4', label: 'Institute', url: '/#institute' },
+      { id: '5', label: 'Careers', url: '/careers' },
     ]
   }
 
