@@ -1,5 +1,8 @@
+import Link from 'next/link';
+
 function getDomain(url?: string): string {
   if (!url) return ''
+  if (url.startsWith('/')) return ''
   try {
     const parsed = new URL(url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`)
     return parsed.hostname.toUpperCase()
@@ -17,7 +20,7 @@ export default function TheInstitute({ content }: { content?: any }) {
         {
           title: 'Tsaro Academy',
           description: 'Professional certification and command-tier training for the institutions we work with — run as its own school, not a page on this site.',
-          link_url: 'https://academy.tsaroglobaldefence.com',
+          link_url: 'https://academy.tsaroglobal.com',
           link_text: 'VISIT ACADEMY',
         },
         {
@@ -58,7 +61,7 @@ export default function TheInstitute({ content }: { content?: any }) {
                                 {domain && (
                                     <a 
                                         href={platform.link_url || '#'} 
-                                        target="_blank" 
+                                        target={platform.link_url?.startsWith('/') ? '_self' : '_blank'} 
                                         rel="noopener noreferrer" 
                                         className="inline-flex items-center gap-1 text-[10px] font-mono text-brandRed font-semibold tracking-widest uppercase mb-6 hover:text-white transition-colors"
                                     >
@@ -76,12 +79,23 @@ export default function TheInstitute({ content }: { content?: any }) {
                                 </p>
                             </div>
                             <div>
-                                <a 
-                                    href={platform.link_url || '#'} 
-                                    className="inline-flex items-center gap-2 text-xs font-bold text-white tracking-widest uppercase border-b border-transparent group-hover:border-white transition-all pb-1"
-                                >
-                                    {platform.link_text} <span className="font-normal">→</span>
-                                </a>
+                                {platform.link_url?.startsWith('/') ? (
+                                    <Link 
+                                        href={platform.link_url} 
+                                        className="inline-flex items-center gap-2 text-xs font-bold text-white tracking-widest uppercase border-b border-transparent group-hover:border-white transition-all pb-1"
+                                    >
+                                        {platform.link_text} <span className="font-normal">→</span>
+                                    </Link>
+                                ) : (
+                                    <a 
+                                        href={platform.link_url || '#'} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-xs font-bold text-white tracking-widest uppercase border-b border-transparent group-hover:border-white transition-all pb-1"
+                                    >
+                                        {platform.link_text} <span className="font-normal">→</span>
+                                    </a>
+                                )}
                             </div>
                         </div>
                     )
