@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian: #18181B;
+  --color-charcoal: #212126;
+  --color-cardSurface: #1E1E22;
+  --color-brandRed: #E62020;
+  --color-brandRedHover: #D91A1A;
+  --color-textMuted: #94A3B8;
+  --color-textLight: #C5C6C7;
+  --color-deepGray: #131316;
+
+  --font-sans: var(--font-jost), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+:root {
+  --background: #18181B;
+  --foreground: #FFFFFF;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.glass-nav {
+  background: rgba(24, 24, 27, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.tactical-mesh {
+  background-image: 
+      radial-gradient(circle at 50% 0%, rgba(230, 32, 32, 0.06) 0%, transparent 55%),
+      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+
+.capability-card {
+  background: #212126;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.capability-card:hover {
+  transform: translateY(-4px);
+  border-top-color: #E62020;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6), 0 0 20px -3px rgba(230, 32, 32, 0.2);
+}
+
+.btn-primary-red {
+  background-color: #E62020;
+  color: #FFFFFF;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-red:hover {
+  background-color: #D91A1A;
+  box-shadow: 0 4px 18px rgba(230, 32, 32, 0.4);
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #18181B;
+}
+::-webkit-scrollbar-thumb {
+  background: #2E2E34;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E62020;
+}

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tsaro Global Defence | Strategic Defense Infrastructure & Intelligence</title>
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <meta name="description" content="Tsaro Global Defence architects and deploys physical security infrastructure, tactical intelligence systems, and defense technologies for sovereign governments and multinational enterprises.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#18181B',
+                        charcoal: '#212126',
+                        cardSurface: '#1E1E22',
+                        brandRed: '#E62020',
+                        brandRedHover: '#D91A1A',
+                        textMuted: '#94A3B8',
+                        textLight: '#C5C6C7',
+                        deepGray: '#131316'
+                    },
+                    fontFamily: {
+                        sans: ['Ropa Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 30s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #18181B;
+            color: #FFFFFF;
+            font-family: 'Ropa Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-nav {
+            background: rgba(24, 24, 27, 0.90);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        .tactical-mesh {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(230, 32, 32, 0.06) 0%, transparent 55%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 48px 48px, 48px 48px;
+        }
+
+        .capability-card {
+            background: #212126;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .capability-card:hover {
+            transform: translateY(-4px);
+            border-top-color: #E62020;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6), 0 0 20px -3px rgba(230, 32, 32, 0.2);
+        }
+
+        .btn-primary-red {
+            background-color: #E62020;
+            color: #FFFFFF;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary-red:hover {
+            background-color: #D91A1A;
+            box-shadow: 0 4px 18px rgba(230, 32, 32, 0.4);
+        }
+
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #18181B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2E2E34;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E62020;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-white antialiased selection:bg-brandRed selection:text-white">
+
+    <!-- Global Navigation -->
+    <header id="siteNav" class="glass-nav fixed top-0 left-0 w-full z-50 py-4 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="./tsaro-icon.png" alt="Tsaro Icon" class="h-9 sm:h-10 w-auto object-contain group-hover:opacity-90 transition-opacity">
+                <img src="./tsaro-logo.png" alt="Tsaro Global Defence" class="h-6 sm:h-7 w-auto object-contain brightness-105 group-hover:opacity-90 transition-opacity">
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-textLight">
+                <a href="index.html" class="text-white border-b-2 border-brandRed pb-1 transition-colors">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors">About Us</a>
+                <a href="products-services.html" class="hover:text-white transition-colors">Products & Services</a>
+                <a href="academy.html" class="hover:text-white transition-colors">Academy</a>
+                <a href="clientele.html" class="hover:text-white transition-colors">Clientele</a>
+                <a href="#intelligence" class="hover:text-white transition-colors">Intelligence</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </nav>
+
+            <!-- Action -->
+            <div class="flex items-center gap-4">
+                <a href="#contact" class="hidden sm:flex btn-primary-red px-5 py-2.5 rounded text-xs font-semibold tracking-wider uppercase items-center gap-2">
+                    <span>Secure Consultation</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button id="mobileMenuBtn" class="md:hidden text-textLight hover:text-white focus:outline-none transition-colors">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="mobileMenuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full glass-nav border-t border-white/10 flex flex-col shadow-2xl">
+            <nav class="flex flex-col px-6 py-6 gap-4 text-sm font-medium text-textLight">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <a href="about.html" class="hover:text-white transition-colors">About Us</a>
+                <a href="products-services.html" class="hover:text-white transition-colors">Products & Services</a>
+                <a href="academy.html" class="hover:text-white transition-colors">Academy</a>
+                <a href="clientele.html" class="hover:text-white transition-colors">Clientele</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+                
+                <a href="#contact" class="mt-2 btn-primary-red px-5 py-3 rounded text-xs font-semibold tracking-wider uppercase flex justify-center items-center gap-2 w-full text-center text-white">
+                    <span>Secure Consultation</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-16 overflow-hidden tactical-mesh">
+        <!-- Background Hero Visual (95% Opacity) -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <img src="./hero-banner.png" alt="Defense Operations" class="w-full h-full object-cover object-center opacity-95 filter contrast-105 brightness-95">
+            <!-- Subtle edge-blend and text scrim -->
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-obsidian/40"></div>
+            <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 45%, rgba(24, 24, 27, 0.1) 0%, rgba(24, 24, 27, 0.5) 80%, #18181B 100%);"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-6 drop-shadow-2xl" style="text-shadow: 0 4px 24px rgba(0,0,0,0.85);">
+                Next-Generation Defense for a <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-brandRed">Complex World.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg" style="text-shadow: 0 2px 14px rgba(0,0,0,0.9);">
+                We architect and deploy elite security infrastructure, tactical intelligence, and defense hardware for governments and enterprise organizations across the globe.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                <a href="#contact" class="btn-primary-red w-full sm:w-auto px-7 py-3.5 rounded text-sm font-semibold tracking-wide uppercase flex items-center justify-center gap-2">
+                    <span>Request Strategic Consultation</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+                <a href="#capabilities" class="w-full sm:w-auto px-7 py-3.5 rounded text-sm font-semibold tracking-wide uppercase border border-white/15 bg-white/5 hover:bg-white/10 text-white transition-all flex items-center justify-center gap-2">
+                    <span>View Core Capabilities</span>
+                </a>
+            </div>
+
+            <div class="mt-14 flex flex-wrap justify-center items-center gap-6 text-xs text-textMuted/70 font-mono">
+                <span>EST. 2018</span>
+                <span>/</span>
+                <span>USA & NIGERIA HEADQUARTERS</span>
+                <span>/</span>
+                <span>ENTERPRISE & SOVEREIGN ACCREDITED</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authority Bar -->
+    <section class="bg-deepGray border-y border-white/5 py-4 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-shrink-0 text-xs font-mono font-semibold tracking-widest text-textMuted uppercase flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brandRed"></span>
+                <span>OPERATIONAL ACCREDITATION & CAPABILITY</span>
+            </div>
+
+            <div class="w-full overflow-hidden relative flex">
+                <div class="flex items-center gap-12 whitespace-nowrap animate-marquee">
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Dual USA & Nigeria Headquarters
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Certified Security Specialists
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> 24/7 Strategic Threat Monitoring
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Tactical Hardware Integration
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> National Defense Advisory
+                    </div>
+
+                    <!-- Duplicate for infinite marquee -->
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Dual USA & Nigeria Headquarters
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Certified Security Specialists
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> 24/7 Strategic Threat Monitoring
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> Tactical Hardware Integration
+                    </div>
+                    <div class="flex items-center gap-2 text-textLight/80 font-medium text-xs uppercase tracking-wider">
+                        <span class="text-textMuted">—</span> National Defense Advisory
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Capabilities -->
+    <section id="capabilities" class="py-24 px-6 md:px-12 bg-obsidian relative">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight">
+                    Strategic Defense Capabilities
+                </h2>
+                <p class="text-textMuted text-base sm:text-lg">
+                    Comprehensive, multi-tier defense frameworks engineered to preemptively mitigate exposure across physical, electronic, and sovereign assets.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Capability 1 -->
+                <div class="capability-card rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded bg-[#161B22] border border-white/10 flex items-center justify-center text-brandRed mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">
+                            Security Infrastructure & Hardware
+                        </h3>
+                        <p class="text-textMuted text-sm leading-relaxed mb-6">
+                            State-of-the-art physical and digital defense systems engineered for absolute asset protection and perimeter integrity.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs font-mono text-textMuted">
+                        <span>PHYSICAL & DIGITAL HARDWARE</span>
+                        <span class="text-brandRed font-bold">→</span>
+                    </div>
+                </div>
+
+                <!-- Capability 2 -->
+                <div class="capability-card rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded bg-[#161B22] border border-white/10 flex items-center justify-center text-brandRed mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">
+                            Tactical Intelligence & Advisory
+                        </h3>
+                        <p class="text-textMuted text-sm leading-relaxed mb-6">
+                            Data-driven risk profiling, threat assessments, and elite consultancy for high-stakes operational environments.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs font-mono text-textMuted">
+                        <span>GEO-POLITICAL INTELLIGENCE</span>
+                        <span class="text-brandRed font-bold">→</span>
+                    </div>
+                </div>
+
+                <!-- Capability 3 -->
+                <div id="academy" class="capability-card rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded bg-[#161B22] border border-white/10 flex items-center justify-center text-brandRed mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">
+                            Tsaro Defence Academy
+                        </h3>
+                        <p class="text-textMuted text-sm leading-relaxed mb-6">
+                            Equipping the next generation of security personnel with advanced tactical discipline, asset defense, and crisis management.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs font-mono text-textMuted">
+                        <a href="academy.html" class="hover:text-brandRed transition-colors">TACTICAL TRAINING FACILITY</a>
+                        <a href="academy.html" class="text-brandRed font-bold hover:translate-x-1 transition-transform">→</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Operational Differentiator -->
+    <section id="about" class="py-24 px-6 md:px-12 bg-charcoal/30 border-t border-white/5 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                    <div class="w-full h-[420px] md:h-[480px] overflow-hidden relative">
+                        <img src="./hero-banner.png" alt="Tsaro Operations" class="w-full h-full object-cover object-center brightness-90 contrast-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-6 left-6 right-6 bg-obsidian/85 backdrop-blur-md p-4 rounded border border-white/10 flex items-center justify-between">
+                            <span class="text-xs font-mono text-textLight uppercase tracking-wider">STRATEGIC FIELD DEPLOYMENT</span>
+                            <span class="text-xs font-mono text-brandRed font-semibold">USA / NIGERIA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                        Global Insight. <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brandRed to-white">Local Execution.</span>
+                    </h2>
+                    
+                    <p class="text-textLight text-base sm:text-lg leading-relaxed mb-6">
+                        With operational headquarters in the United States and Nigeria, Tsaro Global Defence bridges the gap between global defense innovations and localized security architectures.
+                    </p>
+
+                    <p class="text-textMuted text-base leading-relaxed mb-8">
+                        We don’t just react to threats; we anticipate them, neutralize them, and build the institutional frameworks to prevent them. Our methodologies combine field-tested practices with modernized threat-intelligence protocols.
+                    </p>
+
+                    <div>
+                        <a href="#capabilities" class="inline-flex items-center gap-3 text-white hover:text-brandRed font-semibold text-sm tracking-wide group transition-colors">
+                            <span>Discover Our Methodology</span>
+                            <span class="w-7 h-7 rounded-full border border-white/20 group-hover:border-brandRed flex items-center justify-center group-hover:translate-x-1 transition-all">
+                                →
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence & Lead Capture -->
+    <section id="intelligence" class="py-24 px-6 md:px-12 bg-obsidian relative">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="bg-charcoal rounded-2xl p-8 sm:p-12 md:p-16 border border-white/10 shadow-2xl relative">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-6">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 mb-4 tracking-tight">
+                            Intelligence Briefs & Policy Research
+                        </h2>
+                        <p class="text-textLight text-base leading-relaxed mb-6">
+                            Stay ahead of the shifting geopolitical and economic landscape. Download our comprehensive analysis on national security frameworks and strategic risk roadmaps.
+                        </p>
+                        
+                        <div class="space-y-3 font-mono text-xs text-textMuted">
+                            <div class="flex items-center gap-2">
+                                <span class="text-brandRed font-bold">✓</span> Regional threat-actor profiling and asymmetric risk analysis.
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-brandRed font-bold">✓</span> Critical infrastructure resilience recommendations.
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-brandRed font-bold">✓</span> Direct executive delivery for verified institutional inquiries.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-6 bg-obsidian/75 backdrop-blur-sm p-8 rounded-xl border border-white/10">
+                        <form id="leadCaptureForm" class="space-y-5" onsubmit="handleFormSubmit(event)">
+                            <div>
+                                <label for="fullName" class="block text-xs font-mono font-medium text-textLight uppercase tracking-wider mb-2">Full Name</label>
+                                <input type="text" id="fullName" required placeholder="e.g. Samuel Adeyemi" class="w-full px-4 py-3 bg-charcoal/70 border border-white/10 rounded text-white placeholder-textMuted/40 text-sm focus:outline-none focus:border-brandRed transition-colors">
+                            </div>
+
+                            <div>
+                                <label for="corpEmail" class="block text-xs font-mono font-medium text-textLight uppercase tracking-wider mb-2">Official / Corporate Email</label>
+                                <input type="email" id="corpEmail" required placeholder="official@organization.com" class="w-full px-4 py-3 bg-charcoal/70 border border-white/10 rounded text-white placeholder-textMuted/40 text-sm focus:outline-none focus:border-brandRed transition-colors">
+                            </div>
+
+                            <button type="submit" class="btn-primary-red w-full py-3.5 rounded text-sm font-semibold tracking-wide uppercase flex items-center justify-center gap-2">
+                                <span>Download Strategic Brief</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                            </button>
+
+                            <p class="text-[11px] text-textMuted text-center font-mono">
+                                Protected by enterprise data privacy standards. Confidential inquiry handling.
+                            </p>
+                        </form>
+
+                        <div id="formSuccess" class="hidden text-center py-8 space-y-4">
+                            <div class="w-12 h-12 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto text-xl">
+                                ✓
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Inquiry Received</h3>
+                            <p class="text-sm text-textLight">Your strategic intelligence brief has been queued for delivery to your designated address.</p>
+                            <button onclick="resetForm()" class="text-xs font-mono text-brandRed hover:underline uppercase tracking-wider">
+                                Submit another request →
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Global Operations Footer -->
+    <footer id="contact" class="bg-deepGray border-t border-white/10 pt-20 pb-12 px-6 md:px-12 text-sm">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
+                
+                <div class="space-y-4">
+                    <a href="#" class="inline-flex items-center gap-3">
+                        <img src="./tsaro-icon.png" alt="Tsaro Icon" class="h-8 w-auto object-contain">
+                        <img src="./tsaro-logo.png" alt="Tsaro Global Defence" class="h-5 w-auto object-contain brightness-105">
+                    </a>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        Bridging innovation and absolute protection. Architecting defense postures that secure sovereigns, critical infrastructure, and enterprise operations.
+                    </p>
+                    <div class="pt-2 font-mono text-xs text-textLight/70">
+                        GLOBAL HEADQUARTERS: USA & NIGERIA
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-widest text-brandRed font-bold">ABUJA, NIGERIA</h4>
+                    <p class="text-textLight leading-relaxed">
+                        Suite 600, 6th Floor, Sector A,<br>
+                        Shashilga Court, Ahmadu Bello Way,<br>
+                        Abuja, Nigeria
+                    </p>
+                    <p class="font-mono text-xs pt-1">
+                        <span class="text-textMuted">TEL:</span> <a href="tel:+2347043419078" class="text-white hover:text-brandRed transition-colors">+234 7043419078</a>
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-widest text-brandRed font-bold">ORLANDO, FL</h4>
+                    <p class="text-textLight leading-relaxed">
+                        520 East Church Street,<br>
+                        Unit 1109,<br>
+                        Orlando Florida, 32801, USA
+                    </p>
+                    <p class="font-mono text-xs pt-1">
+                        <span class="text-textMuted">TEL:</span> <a href="tel:+19298882357" class="text-white hover:text-brandRed transition-colors">+1 9298882357</a>
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="font-mono text-xs uppercase tracking-widest text-brandRed font-bold">COMMUNICATIONS</h4>
+                    <p class="text-xs font-mono text-textMuted">
+                        GENERAL INQUIRIES:<br>
+                        <a href="mailto:info@tsaroglobaldefence.com" class="text-white hover:text-brandRed transition-colors">info@tsaroglobaldefence.com</a>
+                    </p>
+                    
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#" class="w-8 h-8 rounded bg-[#161B22] border border-white/10 hover:border-brandRed flex items-center justify-center text-textLight hover:text-white transition-colors" title="LinkedIn">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded bg-[#161B22] border border-white/10 hover:border-brandRed flex items-center justify-center text-textLight hover:text-white transition-colors" title="X">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded bg-[#161B22] border border-white/10 hover:border-brandRed flex items-center justify-center text-textLight hover:text-white transition-colors" title="Facebook">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.667 5H18V0h-3.808C10.595 0 9 1.582 9 4.615V8z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-textMuted">
+                <p>© 2026 Tsaro Global Defence. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <span>/</span>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Engagement</a>
+                    <span>/</span>
+                    <a href="#" class="hover:text-white transition-colors">Compliance</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // Navigation auto-hide on scroll down, reveal on scroll up
+        let lastScrollY = window.scrollY;
+        const siteNav = document.getElementById('siteNav');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > 100 && currentScrollY > lastScrollY) {
+                siteNav.classList.add('nav-hidden');
+            } else {
+                siteNav.classList.remove('nav-hidden');
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // Lead submission handling
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('leadCaptureForm').classList.add('hidden');
+            document.getElementById('formSuccess').classList.remove('hidden');
+        }
+
+        function resetForm() {
+            document.getElementById('leadCaptureForm').reset();
+            document.getElementById('leadCaptureForm').classList.remove('hidden');
+            document.getElementById('formSuccess').classList.add('hidden');
+        }
+    
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+
+        if (mobileMenuBtn && mobileMenu && mobileMenuIcon) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+                } else {
+                    mobileMenuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+                }
+            });
+        }
+</script>
+</body>
+</html>
