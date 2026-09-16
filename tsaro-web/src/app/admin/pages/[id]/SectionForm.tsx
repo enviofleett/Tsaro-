@@ -465,7 +465,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
         </>
       )}
 
-      {(section.section_type === 'contact_section' || section.section_type === 'contact_section') && (
+            {(section.section_type === 'contact_section' || section.section_type === 'intelligence_briefs') && (
         <>
           <div>
             <label className="block text-sm font-medium text-textLight mb-1">Headline</label>
@@ -475,7 +475,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
               value={content.headline || ''}
               onChange={handleChange}
               className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white"
-              placeholder="Intelligence Briefs & Policy Research"
+              placeholder="Contact Command"
             />
           </div>
           <div>
@@ -485,51 +485,28 @@ export default function SectionForm({ section, updateAction }: { section: any, u
               value={content.subheadline || ''}
               onChange={handleChange}
               className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-24"
-              placeholder="Stay ahead of the shifting geopolitical and economic landscape..."
+              placeholder="Initiate a secure dialogue with our executive team..."
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-textLight mb-1">Strategic Brief PDF</label>
-            <ImageUpload 
-              value={content.pdf_url || ''} 
-              onChange={(url) => setContent({ ...content, pdf_url: url })} 
-              placeholder="PDF Document URL" 
-              accept=".pdf,application/pdf"
-            />
-            <p className="text-xs text-textMuted mt-1">This file will be downloaded when users fill the form.</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-textLight mb-1">Bullet 1</label>
-            <input
-              type="text"
-              name="bullet_1"
-              value={content.bullet_1 || ''}
+            <label className="block text-sm font-medium text-textLight mb-1">Address Text</label>
+            <textarea
+              name="address"
+              value={content.address || ''}
               onChange={handleChange}
-              className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white"
-              placeholder="Regional threat-actor profiling and asymmetric risk analysis."
+              className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-24"
+              placeholder="Suite 600, 6th Floor, Sector A,
+Shashilga Court, Ahmadu Bello Way,
+Abuja, Nigeria"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-textLight mb-1">Bullet 2</label>
-            <input
-              type="text"
-              name="bullet_2"
-              value={content.bullet_2 || ''}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white"
-              placeholder="Critical infrastructure resilience recommendations."
-            />
+            <label className="block text-sm font-medium text-textLight mb-1">Email Address</label>
+            <input type="text" name="email" value={content.email || ''} onChange={handleChange} placeholder="info@tsaroglobaldefence.com" className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-textLight mb-1">Bullet 3</label>
-            <input
-              type="text"
-              name="bullet_3"
-              value={content.bullet_3 || ''}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white"
-              placeholder="Direct executive delivery for verified institutional inquiries."
-            />
+            <label className="block text-sm font-medium text-textLight mb-1">Phone Number</label>
+            <input type="text" name="phone" value={content.phone || ''} onChange={handleChange} placeholder="+234 704 341 9078" className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" />
           </div>
         </>
       )}

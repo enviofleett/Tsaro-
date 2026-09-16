@@ -83,7 +83,7 @@ export default function ContactSection({ content }: { content?: any }) {
                                 </div>
                                 <div>
                                     <span className="block text-white font-bold mb-1 tracking-widest uppercase">Global Operations Center</span>
-                                    Suite 600, 6th Floor, Sector A,<br/>Shashilga Court, Ahmadu Bello Way,<br/>Abuja, Nigeria
+                                    {content?.address ? <span dangerouslySetInnerHTML={{ __html: content.address.replace(/\n/g, '<br/>') }} /> : <>Suite 600, 6th Floor, Sector A,<br/>Shashilga Court, Ahmadu Bello Way,<br/>Abuja, Nigeria</>}
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
@@ -92,8 +92,8 @@ export default function ContactSection({ content }: { content?: any }) {
                                 </div>
                                 <div>
                                     <span className="block text-white font-bold mb-1 tracking-widest uppercase">Secure Comms</span>
-                                    info@tsaroglobaldefence.com<br/>
-                                    +234 704 341 9078
+                                    {content?.email || 'info@tsaroglobaldefence.com'}<br/>
+                                    {content?.phone || '+234 704 341 9078'}
                                 </div>
                             </div>
                         </div>
