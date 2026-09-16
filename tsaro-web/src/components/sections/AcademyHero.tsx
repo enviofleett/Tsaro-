@@ -1,5 +1,5 @@
 export default function AcademyHero({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Tsaro Defence & <span class="text-brandRed">Security Academy</span>'
+  const headline = content.headline || 'Tsaro Defence & Security Academy'
   const body = content.body || 'Essential training in kinetic and non-kinetic security, filling a vital gap across sovereign and corporate defense landscapes. We combine evidence-based methodology with rigorous scenario immersions for armed forces, law enforcement, and private security cadres.'
   const primaryBtn = content.primaryBtn || { text: 'Explore Certified Programs', link: '#catalog' }
   const secondaryBtn = content.secondaryBtn || { text: 'Training Methodology', link: '#methodology' }
