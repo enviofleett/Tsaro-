@@ -643,7 +643,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Locations</h4>
             <button type="button" onClick={() => { const locations = [...(content.locations || [])]; locations.push(''); setContent({ ...content, locations }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Location</button></div>
-            {(content.locations || []).map((loc, i) => (
+            {(content.locations || []).map((loc: any, i: number) => (
               <div key={i} className="flex gap-2">
                 <input type="text" value={loc || ''} onChange={(e) => { const locations = [...(content.locations || [])]; locations[i] = e.target.value; setContent({ ...content, locations }) }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <button type="button" onClick={() => { const locations = [...(content.locations || [])]; locations.splice(i, 1); setContent({ ...content, locations }) }} className="text-brandRed text-xs">Remove</button>
@@ -673,7 +673,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           <div><label className="block text-sm font-medium text-textLight mb-1">Subheadline</label><textarea name="subheadline" value={content.subheadline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-16" /></div>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Values</h4><button type="button" onClick={() => { const values = [...(content.values || [])]; values.push({}); setContent({ ...content, values }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Value</button></div>
-            {(content.values || []).map((v, i) => (
+            {(content.values || []).map((v: any, i: number) => (
               <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
                 <div className="flex items-center justify-between mb-2"><div className="text-xs text-brandRed font-bold">VALUE {i + 1}</div><button type="button" onClick={() => { const values = [...(content.values || [])]; values.splice(i, 1); setContent({ ...content, values }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button></div>
                 <input type="text" placeholder="Title" value={v.title || ''} onChange={(e) => handleArrayChange('values', i, 'title', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
@@ -691,7 +691,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           <div><label className="block text-sm font-medium text-textLight mb-1">Subheadline</label><textarea name="subheadline" value={content.subheadline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-24" /></div>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Tags</h4><button type="button" onClick={() => { const tags = [...(content.tags || [])]; tags.push(''); setContent({ ...content, tags }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Tag</button></div>
-            {(content.tags || []).map((tag, i) => (
+            {(content.tags || []).map((tag: any, i: number) => (
               <div key={i} className="flex gap-2">
                 <input type="text" value={tag || ''} onChange={(e) => { const tags = [...(content.tags || [])]; tags[i] = e.target.value; setContent({ ...content, tags }) }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <button type="button" onClick={() => { const tags = [...(content.tags || [])]; tags.splice(i, 1); setContent({ ...content, tags }) }} className="text-brandRed text-xs">Remove</button>
@@ -705,7 +705,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
         <>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Sectors</h4><button type="button" onClick={() => { const sectors = [...(content.sectors || [])]; sectors.push({ bullets: [] }); setContent({ ...content, sectors }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Sector</button></div>
-            {(content.sectors || []).map((sector, i) => (
+            {(content.sectors || []).map((sector: any, i: number) => (
               <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
                 <div className="flex items-center justify-between mb-2"><div className="text-xs text-brandRed font-bold">SECTOR {i + 1}</div><button type="button" onClick={() => { const sectors = [...(content.sectors || [])]; sectors.splice(i, 1); setContent({ ...content, sectors }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button></div>
                 <input type="text" placeholder="Title" value={sector.title || ''} onChange={(e) => handleArrayChange('sectors', i, 'title', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
@@ -751,7 +751,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           </div>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Key Facts</h4><button type="button" onClick={() => { const facts = [...(content.facts || [])]; facts.push({}); setContent({ ...content, facts }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Fact</button></div>
-            {(content.facts || []).map((f, i) => (
+            {(content.facts || []).map((f: any, i: number) => (
               <div key={i} className="flex gap-2">
                 <input type="text" placeholder="Value (e.g. 100%)" value={f.value || ''} onChange={(e) => handleArrayChange('facts', i, 'value', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <input type="text" placeholder="Label (e.g. Instructors)" value={f.label || ''} onChange={(e) => handleArrayChange('facts', i, 'label', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
@@ -784,7 +784,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           <div><label className="block text-sm font-medium text-textLight mb-1">Headline</label><input type="text" name="headline" value={content.headline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Programs</h4><button type="button" onClick={() => { const programs = [...(content.programs || [])]; programs.push({}); setContent({ ...content, programs }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Program</button></div>
-            {(content.programs || []).map((p, i) => (
+            {(content.programs || []).map((p: any, i: number) => (
               <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
                 <div className="flex items-center justify-between mb-2"><div className="text-xs text-brandRed font-bold">PROGRAM {i + 1}</div><button type="button" onClick={() => { const programs = [...(content.programs || [])]; programs.splice(i, 1); setContent({ ...content, programs }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button></div>
                 <select value={p.type || ''} onChange={(e) => handleArrayChange('programs', i, 'type', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm">
@@ -817,7 +817,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           <div><label className="block text-sm font-medium text-textLight mb-1">Subheadline</label><textarea name="subheadline" value={content.subheadline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-16" /></div>
           <div className="pt-4 border-t border-white/10 mt-4 space-y-6">
             <div className="flex items-center justify-between"><h4 className="text-white font-semibold">Pillars</h4><button type="button" onClick={() => { const pillars = [...(content.pillars || [])]; pillars.push({}); setContent({ ...content, pillars }); }} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-white transition-colors">+ Add Pillar</button></div>
-            {(content.pillars || []).map((p, i) => (
+            {(content.pillars || []).map((p: any, i: number) => (
               <div key={i} className="bg-deepGray/50 p-4 rounded border border-white/5 space-y-3 relative">
                 <div className="flex items-center justify-between mb-2"><div className="text-xs text-brandRed font-bold">PILLAR {i + 1}</div><button type="button" onClick={() => { const pillars = [...(content.pillars || [])]; pillars.splice(i, 1); setContent({ ...content, pillars }) }} className="text-xs text-textMuted hover:text-brandRed">Remove</button></div>
                 <input type="text" placeholder="Title" value={p.title || ''} onChange={(e) => handleArrayChange('pillars', i, 'title', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />

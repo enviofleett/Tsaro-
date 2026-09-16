@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 
 export async function submitAcademyBooking(formData: FormData) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   const courseCode = formData.get('courseCode') as string
   const courseName = formData.get('courseName') as string

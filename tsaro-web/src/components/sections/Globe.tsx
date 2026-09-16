@@ -62,7 +62,7 @@ function Globe({ locations, activeIdx, onLocationClick }: GlobeProps) {
                 default: { outline: 'none' },
                 hover: { fill: '#444', outline: 'none' },
                 pressed: { outline: 'none' },
-              }}
+              } as any}
             />
           ))
         }
