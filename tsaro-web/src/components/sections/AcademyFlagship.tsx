@@ -18,7 +18,22 @@ export default function AcademyFlagship({ content = {} }: { content?: any }) {
     'Armored Motorcade Tactics & Rapid Extraction',
     'Threat Vector Profiling & Advance Reconnaissance'
   ]
-  const date = content.date || 'October 15, 2026'
+  const startDate = content.startDate || content.date || '2026-10-15'
+  const endDate = content.endDate || ''
+  const timeRange = content.timeRange || '0900 - 1700 HRS'
+  
+  const formatDate = (dStr: string) => {
+    if (!dStr) return '';
+    try {
+      return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dStr));
+    } catch {
+      return dStr;
+    }
+  }
+  
+  const formattedStart = formatDate(startDate);
+  const formattedEnd = endDate ? formatDate(endDate) : '';
+  const displayDate = formattedEnd ? `${formattedStart} - ${formattedEnd}` : formattedStart;
 
   async function handleBookingSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -63,7 +78,10 @@ export default function AcademyFlagship({ content = {} }: { content?: any }) {
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <span className="block text-[11px] font-mono text-textMuted uppercase">Next Induction</span>
-                <span className="text-sm font-semibold text-white">{date}</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-white">{displayDate}</span>
+                  {timeRange && <span className="text-xs text-textMuted mt-0.5">{timeRange}</span>}
+                </div>
               </div>
               <button onClick={() => { setIsModalOpen(true); setModalState('form'); }} className="btn-primary-red px-6 py-3 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
                 <span>Book Program</span>
