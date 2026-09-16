@@ -193,7 +193,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
+                <div className="flex items-center gap-1" >
                   <form action={moveSection} className="inline">
                     <input type="hidden" name="section_id" value={section.id} />
                     <input type="hidden" name="direction" value="up" />
