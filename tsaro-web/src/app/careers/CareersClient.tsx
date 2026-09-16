@@ -61,17 +61,17 @@ export default function CareersClient() {
             Global Defense
           </h1>
           <p className="text-lg text-textLight leading-relaxed">
-            We operate at the bleeding edge of kinetic operations and algorithmic intelligence. Join a cadre of elite operators, data scientists, and strategists securing the next century.
+            Join our team of elite professionals working to secure critical infrastructure and shape the future of global defense.
           </p>
         </div>
 
         {/* Open Positions */}
         <div>
           <div className="flex items-end justify-between border-b border-white/10 pb-6 mb-8">
-            <h2 className="text-3xl font-bold text-white tracking-tight">Open Vectors</h2>
+            <h2 className="text-3xl font-bold text-white tracking-tight">Open Positions</h2>
             <div className="hidden sm:flex text-xs font-mono text-textMuted gap-4">
-              <span>[ STATUS: RECRUITING ]</span>
-              <span>[ POSITIONS: 4 ]</span>
+              <span>Recruiting</span>
+              <span>4 Openings</span>
             </div>
           </div>
 
@@ -100,7 +100,7 @@ export default function CareersClient() {
                 
                 <div className="relative z-10">
                   <button onClick={() => openApplicationModal(job.role)} className="px-5 py-2.5 bg-white/5 border border-white/10 hover:border-brandRed hover:bg-brandRed/10 rounded text-xs font-semibold uppercase tracking-wider text-white transition-all w-full md:w-auto">
-                    Initialize Application
+                    Apply
                   </button>
                 </div>
               </div>
@@ -119,23 +119,23 @@ export default function CareersClient() {
                 {modalState === 'form' ? (
                 <div>
                     <div className="mb-6">
-                        <h3 className="text-2xl font-bold text-white tracking-tight">Personnel Intake Form</h3>
-                        <p className="text-xs font-mono text-textMuted mt-1">ROLE: {selectedRole.toUpperCase()}</p>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Application Form</h3>
+                        <p className="text-xs font-mono text-textMuted mt-1">Role: {selectedRole.toUpperCase()}</p>
                     </div>
                     <form onSubmit={handleApplicationSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-xs font-medium text-textLight mb-1.5">Full Name *</label>
-                                <input type="text" name="name" required placeholder="e.g. John Doe" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
+                                <input type="text" name="name" required placeholder="e.g. Samuel Adeyemi" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-textLight mb-1.5">Email Address *</label>
-                                <input type="email" name="email" required placeholder="john@example.com" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
+                                <input type="email" name="email" required placeholder="s.adeyemi@example.com" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
                             </div>
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-textLight mb-1.5">Phone Number *</label>
-                            <input type="text" name="phone" required placeholder="+1 (555) 000-0000" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
+                            <input type="text" name="phone" required placeholder="+234 800 000 0000" className="w-full px-4 py-3 bg-[#18181B] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-brandRed transition-colors" />
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-textLight mb-1.5">Upload CV (PDF) *</label>
@@ -144,7 +144,7 @@ export default function CareersClient() {
                         <div className="pt-4 flex items-center justify-end gap-3">
                             <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-3 rounded-lg border border-white/15 hover:border-white/30 text-xs font-mono uppercase tracking-wider text-white transition-colors">Cancel</button>
                             <button type="submit" disabled={isSubmitting} className="btn-primary-red px-6 py-3 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center gap-2 disabled:opacity-50">
-                              <span>{isSubmitting ? 'Submitting...' : 'Submit Dossier'}</span>
+                              <span>{isSubmitting ? 'Submitting...' : 'Submit Application'}</span>
                             </button>
                         </div>
                     </form>
@@ -154,8 +154,8 @@ export default function CareersClient() {
                     <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto mb-6">
                         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Dossier Received</h3>
-                    <p className="text-textLight text-sm max-w-md mx-auto leading-relaxed mb-6">Your application has been securely transmitted to our recruitment command. We will initiate contact if your profile matches our operational vectors.</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">Application Received</h3>
+                    <p className="text-textLight text-sm max-w-md mx-auto leading-relaxed mb-6">Thank you for your application. Our recruitment team will review your profile and get back to you shortly.</p>
                     <button onClick={() => setIsModalOpen(false)} className="btn-primary-red px-8 py-3 rounded-lg text-xs font-semibold uppercase tracking-wider">Close</button>
                 </div>
                 )}
