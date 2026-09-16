@@ -465,7 +465,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
         </>
       )}
 
-      {section.section_type === 'intelligence_briefs' && (
+      {(section.section_type === 'contact_section' || section.section_type === 'contact_section') && (
         <>
           <div>
             <label className="block text-sm font-medium text-textLight mb-1">Headline</label>
@@ -869,7 +869,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
       )}
 
       {/* Fallback for unconfigured section types */}
-      {!['hero_banner', 'text_block', 'capability_grid', 'where_we_operate', 'research_insights', 'authority_bar', 'commitments', 'operational_differentiator', 'intelligence_briefs', 'institute', 'about_hero', 'split_narrative', 'core_values', 'clientele_hero', 'client_sectors', 'pull_quote', 'cta_banner', 'academy_hero', 'academy_flagship', 'academy_catalog', 'academy_methodology'].includes(section.section_type) && (
+      {!['hero_banner', 'text_block', 'capability_grid', 'where_we_operate', 'research_insights', 'authority_bar', 'commitments', 'operational_differentiator', 'contact_section', 'institute', 'about_hero', 'split_narrative', 'core_values', 'clientele_hero', 'client_sectors', 'pull_quote', 'cta_banner', 'academy_hero', 'academy_flagship', 'academy_catalog', 'academy_methodology'].includes(section.section_type) && (
         <div>
           <label className="block text-sm font-medium text-textLight mb-1">Raw JSON Content</label>
           <textarea name="content" value={JSON.stringify(content, null, 2)} onChange={(e) => {
