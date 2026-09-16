@@ -3,6 +3,15 @@ import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import SectionForm from './SectionForm'
 
+
+function formatSectionType(type: string) {
+  return type
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+
 export default async function EditPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const supabase = await createClient()
@@ -79,7 +88,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
     
     try {
       const parsedContent = JSON.parse(content)
-      await supabase.from('page_sections').update({ content: parsedContent }).eq('id', section_id)
+      const { error } = await supabase.from('page_sections').update({ content: parsedContent }).eq('id', section_id); if (error) console.error("SUPABASE ERROR:", error)
       revalidatePath(`/admin/pages/${id}`)
     } catch (e) {
       console.error("Invalid JSON content", e)
@@ -152,7 +161,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
               <div className="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
                 <div>
                   <span className="text-xs font-bold text-brandRed uppercase tracking-widest">Section {idx + 1}</span>
-                  <h3 className="text-lg font-semibold text-white mt-1">{section.section_type}</h3>
+                  <h3 className="text-lg font-semibold text-white mt-1">{formatSectionType(section.section_type)}</h3>
                 </div>
                 <form action={deleteSection}>
                   <input type="hidden" name="section_id" value={section.id} />

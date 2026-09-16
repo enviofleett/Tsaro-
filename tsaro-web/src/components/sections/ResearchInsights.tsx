@@ -56,20 +56,16 @@ export default function ResearchInsights({ content }: { content?: any }) {
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="md:w-1/2">
-            <div className="text-[11px] font-mono text-brandRed font-semibold tracking-widest uppercase mb-4">
-              Insights
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-serif font-normal text-white tracking-tight leading-tight">
-              {headline}
-            </h2>
+        <div className="flex flex-col items-center text-center mb-16 gap-4 max-w-3xl mx-auto">
+          <div className="text-[11px] font-mono text-brandRed font-semibold tracking-widest uppercase">
+            Insights
           </div>
-          <div className="md:w-1/3">
-            <p className="text-textMuted text-sm leading-relaxed">
-              {subheadline}
-            </p>
-          </div>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08]">
+            {headline}
+          </h2>
+          <p className="text-white/80 text-lg sm:text-xl leading-relaxed mt-4 max-w-2xl mx-auto">
+            {subheadline}
+          </p>
         </div>
 
         {/* Cards grid */}

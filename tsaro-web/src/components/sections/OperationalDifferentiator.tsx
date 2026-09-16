@@ -34,12 +34,12 @@ export default function OperationalDifferentiator({ content }: { content?: any }
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
                 <div className="md:w-1/2">
                     <h2 
-                        className="text-4xl sm:text-5xl font-serif font-normal text-white tracking-tight leading-tight"
+                        className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08]"
                         dangerouslySetInnerHTML={{ __html: headline }}
                     />
                 </div>
                 <div className="md:w-1/3">
-                    <p className="text-textMuted text-sm leading-relaxed">
+                    <p className="text-white/80 text-lg sm:text-xl leading-relaxed mt-4">
                         {subtitle}
                     </p>
                 </div>

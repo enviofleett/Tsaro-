@@ -59,18 +59,18 @@ export default function HeroBanner({ content }: { content?: any }) {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl w-full mx-auto text-left flex flex-col items-start">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-normal text-white tracking-tight leading-[1.08] mb-6 drop-shadow-2xl" 
+        <div className="relative z-10 max-w-7xl w-full mx-auto text-center flex flex-col items-center">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-bold text-white tracking-tighter leading-[1.08] mb-6 drop-shadow-2xl" 
                 style={{textShadow: '0 4px 24px rgba(0,0,0,0.85)'}}
                 dangerouslySetInnerHTML={{ __html: headline }}
             />
 
-            <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mb-10 leading-relaxed drop-shadow-lg" 
+            <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg" 
                style={{textShadow: '0 2px 14px rgba(0,0,0,0.9)'}}>
                 {subheadline}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-start gap-8 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full sm:w-auto">
                 <a href="#contact" className="btn-primary-red w-full sm:w-auto px-8 py-4 rounded-sm text-sm font-semibold tracking-widest uppercase text-center">
                     Request a Briefing
                 </a>
@@ -79,7 +79,7 @@ export default function HeroBanner({ content }: { content?: any }) {
                 </a>
             </div>
 
-            <div className="mt-14 flex flex-wrap justify-start items-center gap-6 text-xs text-textMuted/70 font-mono">
+            <div className="mt-14 flex flex-wrap justify-center items-center gap-6 text-xs text-textMuted/70 font-mono">
                 <span>EST. 2018</span>
                 <span>/</span>
                 <span>USA &amp; NIGERIA HEADQUARTERS</span>

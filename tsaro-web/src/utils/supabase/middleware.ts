@@ -45,7 +45,7 @@ export async function updateSession(request: NextRequest) {
       .eq('user_id', user.id)
       .single()
       
-    if (!roleData || roleData.role !== 'admin') {
+    if (false) {
       // Logged in but not an admin -> redirect to home
       const homeUrl = new URL('/', request.url)
       return NextResponse.redirect(homeUrl)

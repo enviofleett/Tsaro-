@@ -1,88 +1,102 @@
 "use client";
 
-import Image from 'next/image';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the Globe to disable SSR (SVG map requires browser APIs)
+const DynamicGlobe = dynamic(() => import('./Globe'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full rounded-full border border-white/10 animate-pulse bg-deepGray flex items-center justify-center">
+      <div className="text-white/30 text-sm">Loading map…</div>
+    </div>
+  ),
+});
 
 interface Location {
   name: string;
   image: string;
   address: string;
+  coords: [number, number];
+}
+
+function getCoordsFromName(name: string): [number, number] {
+  const n = name.toLowerCase();
+  if (n.includes('orlando')) return [28.5383, -81.3792];
+  if (n.includes('abuja')) return [9.0579, 7.4951];
+  if (n.includes('europe') || n.includes('london')) return [51.5072, -0.1276];
+  return [0, 0];
 }
 
 const DEFAULT_LOCATIONS: Location[] = [
-  { name: "Abuja, Nigeria", image: "/earth-nigeria.jpg", address: "" },
-  { name: "Orlando, FL", image: "/earth-orlando.jpg", address: "" },
-  { name: "Europe", image: "/earth-europe.jpg", address: "" }
+  { name: "Abuja, Nigeria", image: "", address: "Tsaro Africa Operations Center\nCentral Business District, Abuja", coords: [9.0579, 7.4951] },
+  { name: "Orlando, FL", image: "", address: "Tsaro North America HQ\nDowntown Orlando, Florida", coords: [28.5383, -81.3792] },
+  { name: "Europe", image: "", address: "Strategic Partnership Desk\nEuropean Union", coords: [51.5072, -0.1276] },
 ];
 
 export default function WhereWeOperate({ content }: { content?: any }) {
-  const locations: Location[] = content?.locations?.length
-    ? content.locations.map((loc: any) => ({
-        name: loc.name || "",
-        image: loc.image || "",
-        address: loc.address || "",
-      }))
-    : DEFAULT_LOCATIONS;
+  const rawLocations = content?.locations?.length ? content.locations : DEFAULT_LOCATIONS;
+  const locations: Location[] = rawLocations.map((loc: any) => ({
+    name: loc.name || "",
+    image: loc.image || "",
+    address: loc.address || "",
+    coords: loc.coords || getCoordsFromName(loc.name || ""),
+  }));
 
   const headline = content?.headline || "Where we operate";
-
-  const [activeCard, setActiveCard] = useState<number | null>(null);
-
-  const toggleCard = (idx: number) => {
-    setActiveCard(activeCard === idx ? null : idx);
-  };
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   return (
-    <section className="py-24 px-6 md:px-12 bg-charcoal relative">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl sm:text-5xl font-serif font-normal text-white tracking-tight leading-tight mb-16">
-          {headline}
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {locations.map((loc, idx) => (
-            <div 
-              key={idx} 
-              className="relative aspect-[16/10] rounded-sm overflow-hidden group cursor-pointer"
-              onClick={() => loc.address && toggleCard(idx)}
-            >
-              {/* Background satellite image */}
-              <Image
-                src={loc.image}
-                alt={`Satellite view of ${loc.name}`}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              
-              {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+    <section className="py-32 px-6 md:px-12 bg-charcoal relative overflow-hidden border-t border-white/5">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
 
-              {/* Address overlay — shown on click */}
-              {activeCard === idx && loc.address && (
-                <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col justify-center p-6 animate-in fade-in duration-300">
-                  <h3 className="text-lg font-semibold text-white mb-3">{loc.name}</h3>
-                  <p className="text-textMuted text-sm leading-relaxed whitespace-pre-line">{loc.address}</p>
-                  <span className="mt-4 text-xs text-textMuted/60">Click to close</span>
+        {/* Left Side: Location List */}
+        <div className="lg:w-1/2 w-full z-10 flex flex-col">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08] mb-12 text-left">
+            {headline}
+          </h2>
+
+          <div className="flex flex-col gap-6">
+            {locations.map((loc, idx) => (
+              <div
+                key={idx}
+                onClick={() => setActiveIdx(activeIdx === idx ? null : idx)}
+                onMouseEnter={() => setActiveIdx(idx)}
+                onMouseLeave={() => setActiveIdx(null)}
+                className={`p-6 rounded-lg border transition-all duration-300 cursor-pointer ${
+                  activeIdx === idx
+                    ? 'bg-deepGray border-brandRed/50 shadow-[0_0_30px_rgba(215,35,35,0.15)]'
+                    : 'bg-deepGray/40 border-white/5 hover:border-white/20'
+                }`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`mt-1.5 w-2.5 h-2.5 rounded-full transition-all duration-300 ${activeIdx === idx ? 'bg-brandRed animate-pulse' : 'bg-white/20'}`} />
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">{loc.name}</h3>
+                    {loc.address ? (
+                      <p className="text-textMuted text-sm leading-relaxed whitespace-pre-line">
+                        {loc.address}
+                      </p>
+                    ) : (
+                      <p className="text-textMuted text-sm italic">Contact for clearance details</p>
+                    )}
+                  </div>
                 </div>
-              )}
-              
-              {/* Location name + tap hint */}
-              {activeCard !== idx && (
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
-                  <h3 className="text-xl font-semibold text-white">
-                    {loc.name}
-                  </h3>
-                  {loc.address && (
-                    <span className="text-xs text-textMuted/70 group-hover:text-white transition-colors">
-                      View address →
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Right Side: Globe Map */}
+        <div className="lg:w-1/2 w-full max-w-lg aspect-square relative flex items-center justify-center">
+          <div className="absolute inset-0 bg-brandRed/5 rounded-full blur-[100px] pointer-events-none" />
+          <DynamicGlobe
+            locations={locations}
+            activeIdx={activeIdx}
+            onLocationClick={(idx) => setActiveIdx(activeIdx === idx ? null : idx)}
+          />
+        </div>
+
       </div>
     </section>
   );

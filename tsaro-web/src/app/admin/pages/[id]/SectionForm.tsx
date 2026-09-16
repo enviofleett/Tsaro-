@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import ImageUpload from '@/components/admin/ImageUpload'
 
 export default function SectionForm({ section, updateAction }: { section: any, updateAction: (formData: FormData) => Promise<void> }) {
   const [content, setContent] = useState(section.content || {})
   const [isSaving, setIsSaving] = useState(false)
+  const [saveStatus, setSaveStatus] = useState<string | null>(null)
 
   // Handle nested form changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,6 +29,8 @@ export default function SectionForm({ section, updateAction }: { section: any, u
     formData.append('content', JSON.stringify(content))
     await updateAction(formData)
     setIsSaving(false)
+    setSaveStatus("Saved!")
+    setTimeout(() => setSaveStatus(null), 3000)
   }
 
   return (
@@ -137,8 +141,28 @@ export default function SectionForm({ section, updateAction }: { section: any, u
                     </button>
                   </div>
                   <input type="text" placeholder="Location Name (e.g. Abuja, Nigeria)" value={loc.name || ''} onChange={(e) => handleArrayChange('locations', i, 'name', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                  <input type="text" placeholder="Image URL (e.g. /earth-nigeria.jpg)" value={loc.image || ''} onChange={(e) => handleArrayChange('locations', i, 'image', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                  <textarea placeholder="Full Address (shown when user clicks the card)" value={loc.address || ''} onChange={(e) => handleArrayChange('locations', i, 'address', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
+                  <textarea placeholder="Office Address (e.g. Tsaro Africa Operations Center&#10;Central Business District, Abuja)" value={loc.address || ''} onChange={(e) => handleArrayChange('locations', i, 'address', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs text-textMuted mb-1">Latitude</label>
+                      <input type="text" placeholder="e.g. 9.0579" value={loc.coords?.[0] ?? ''} onChange={(e) => {
+                        const locations = [...(content.locations || [])];
+                        const coords = locations[i]?.coords || [0, 0];
+                        locations[i] = { ...locations[i], coords: [parseFloat(e.target.value) || 0, coords[1]] };
+                        setContent({ ...content, locations });
+                      }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-textMuted mb-1">Longitude</label>
+                      <input type="text" placeholder="e.g. 7.4951" value={loc.coords?.[1] ?? ''} onChange={(e) => {
+                        const locations = [...(content.locations || [])];
+                        const coords = locations[i]?.coords || [0, 0];
+                        locations[i] = { ...locations[i], coords: [coords[0], parseFloat(e.target.value) || 0] };
+                        setContent({ ...content, locations });
+                      }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                    </div>
+                  </div>
+                  <p className="text-xs text-textMuted">Tip: Search &quot;[city name] coordinates&quot; on Google to find lat/lng values for the map pin.</p>
                 </div>
               )
             })}
@@ -198,7 +222,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
                   <input type="text" placeholder="Category (e.g. Policy Analysis)" value={item.category || ''} onChange={(e) => handleArrayChange('insights', i, 'category', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                   <input type="text" placeholder="Title" value={item.title || ''} onChange={(e) => handleArrayChange('insights', i, 'title', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                   <textarea placeholder="Excerpt / Summary" value={item.excerpt || ''} onChange={(e) => handleArrayChange('insights', i, 'excerpt', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
-                  <input type="text" placeholder="Cover Image URL (e.g. /research-cover.jpg)" value={item.image || ''} onChange={(e) => handleArrayChange('insights', i, 'image', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                  <ImageUpload value={item.image || ''} onChange={(url) => handleArrayChange('insights', i, 'image', url)} placeholder="Cover Image URL (e.g. /research-cover.jpg)" />
                   <input type="text" placeholder="Link URL (e.g. https://...)" value={item.link || ''} onChange={(e) => handleArrayChange('insights', i, 'link', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 </div>
               )
@@ -465,6 +489,16 @@ export default function SectionForm({ section, updateAction }: { section: any, u
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-textLight mb-1">Strategic Brief PDF</label>
+            <ImageUpload 
+              value={content.pdf_url || ''} 
+              onChange={(url) => setContent({ ...content, pdf_url: url })} 
+              placeholder="PDF Document URL" 
+              accept=".pdf,application/pdf"
+            />
+            <p className="text-xs text-textMuted mt-1">This file will be downloaded when users fill the form.</p>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-textLight mb-1">Bullet 1</label>
             <input
               type="text"
@@ -621,7 +655,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
 
       {section.section_type === 'split_narrative' && (
         <>
-          <div><label className="block text-sm font-medium text-textLight mb-1">Image URL</label><input type="text" name="image" value={content.image || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
+          <div><label className="block text-sm font-medium text-textLight mb-1">Image URL</label><ImageUpload value={content.image || ''} onChange={(url) => setContent({ ...content, image: url })} placeholder="Image URL" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Overline</label><input type="text" name="overline" value={content.overline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Badge</label><input type="text" name="badge" value={content.badge || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Headline</label><textarea name="headline" value={content.headline || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-24" /></div>
@@ -731,7 +765,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
       {section.section_type === 'academy_flagship' && (
         <>
           <div><label className="block text-sm font-medium text-textLight mb-1">Badge</label><input type="text" name="badge" value={content.badge || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
-          <div><label className="block text-sm font-medium text-textLight mb-1">Image URL</label><input type="text" name="image" value={content.image || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
+          <div><label className="block text-sm font-medium text-textLight mb-1">Image URL</label><ImageUpload value={content.image || ''} onChange={(url) => setContent({ ...content, image: url })} placeholder="Image URL" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Image Overlay Badge</label><input type="text" name="imageBadge" value={content.imageBadge || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Course Code</label><input type="text" name="code" value={content.code || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
           <div><label className="block text-sm font-medium text-textLight mb-1">Code Type / Category</label><input type="text" name="codeType" value={content.codeType || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" /></div>
@@ -763,7 +797,7 @@ export default function SectionForm({ section, updateAction }: { section: any, u
                 <input type="text" placeholder="Title" value={p.title || ''} onChange={(e) => handleArrayChange('programs', i, 'title', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <input type="text" placeholder="Code" value={p.code || ''} onChange={(e) => handleArrayChange('programs', i, 'code', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <input type="text" placeholder="Badge" value={p.badge || ''} onChange={(e) => handleArrayChange('programs', i, 'badge', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
-                <input type="text" placeholder="Image URL" value={p.image || ''} onChange={(e) => handleArrayChange('programs', i, 'image', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                <ImageUpload value={p.image || ''} onChange={(url) => handleArrayChange('programs', i, 'image', url)} placeholder="Image URL" />
                 <textarea placeholder="Description" value={p.desc || ''} onChange={(e) => handleArrayChange('programs', i, 'desc', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-20 text-sm" />
                 <div className="grid grid-cols-3 gap-2">
                   <input type="text" placeholder="Format" value={p.format || ''} onChange={(e) => handleArrayChange('programs', i, 'format', e.target.value)} className="w-full px-2 py-1 bg-deepGray border border-white/10 rounded text-white text-sm" />
@@ -804,9 +838,12 @@ export default function SectionForm({ section, updateAction }: { section: any, u
         </div>
       )}
 
-      <button type="submit" disabled={isSaving} className="bg-brandRed hover:bg-red-700 px-6 py-2 rounded text-white font-medium text-sm transition-colors mt-4">
-        {isSaving ? 'Saving...' : 'Save Content'}
-      </button>
+      <div className="flex items-center gap-4 mt-4">
+        <button type="submit" disabled={isSaving} className="bg-brandRed hover:bg-red-700 px-6 py-2 rounded text-white font-medium text-sm transition-colors disabled:opacity-50">
+          {isSaving ? 'Saving...' : 'Save Content'}
+        </button>
+        {saveStatus && <span className="text-green-500 text-sm font-medium animate-pulse">{saveStatus}</span>}
+      </div>
     </form>
   )
 }

@@ -1,4 +1,66 @@
+"use client";
+
+import { useState } from 'react';
+import { createClient } from '@/utils/supabase/client';
+
 export default function IntelligenceBriefs({ content }: { content?: any }) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const supabase = createClient();
+
+  // Basic email validation regex
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isFormValid = fullName.trim().length > 0 && isValidEmail(email);
+
+  const handleDownload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Record the lead in Supabase
+      const { error } = await supabase
+        .from('downloads')
+        .insert([{ full_name: fullName.trim(), email: email.trim() }]);
+
+      if (error) {
+        console.error("Error saving lead:", error);
+        // Continue to let them download anyway, or block them. We'll let them download.
+      }
+
+      setSuccess(true);
+
+      // 2. Trigger the PDF download
+      const pdfUrl = content?.pdf_url || "/tsaro-strategic-brief.pdf"; 
+      
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.target = "_blank";
+      link.download = "Tsaro_Strategic_Brief.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Reset form after a few seconds
+      setTimeout(() => {
+        setSuccess(false);
+        setFullName("");
+        setEmail("");
+      }, 5000);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section id="intelligence" className="py-24 px-6 md:px-12 bg-obsidian relative">
         <div className="max-w-7xl mx-auto">
@@ -28,22 +90,63 @@ export default function IntelligenceBriefs({ content }: { content?: any }) {
                     </div>
 
                     <div className="lg:col-span-6 bg-obsidian/75 backdrop-blur-sm p-8 rounded-xl border border-white/10">
-                        <form id="leadCaptureForm" className="space-y-5">
+                        <form id="leadCaptureForm" className="space-y-5" onSubmit={handleDownload}>
                             <div>
                                 <label htmlFor="fullName" className="block text-xs font-mono font-medium text-textLight uppercase tracking-wider mb-2">Full Name</label>
-                                <input type="text" id="fullName" required placeholder="e.g. Samuel Adeyemi" className="w-full px-4 py-3 bg-charcoal/70 border border-white/10 rounded text-white placeholder-textMuted/40 text-sm focus:outline-none focus:border-brandRed transition-colors" />
+                                <input 
+                                    type="text" 
+                                    id="fullName" 
+                                    value={fullName}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                    required 
+                                    placeholder="e.g. Samuel Adeyemi" 
+                                    className="w-full px-4 py-3 bg-charcoal/70 border border-white/10 rounded text-white placeholder-textMuted/40 text-sm focus:outline-none focus:border-brandRed transition-colors" 
+                                />
                             </div>
 
                             <div>
                                 <label htmlFor="corpEmail" className="block text-xs font-mono font-medium text-textLight uppercase tracking-wider mb-2">Official / Corporate Email</label>
-                                <input type="email" id="corpEmail" required placeholder="official@organization.com" className="w-full px-4 py-3 bg-charcoal/70 border border-white/10 rounded text-white placeholder-textMuted/40 text-sm focus:outline-none focus:border-brandRed transition-colors" />
+                                <input 
+                                    type="email" 
+                                    id="corpEmail" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required 
+                                    placeholder="official@organization.com" 
+                                    className={`w-full px-4 py-3 bg-charcoal/70 border rounded text-white placeholder-textMuted/40 text-sm focus:outline-none transition-colors ${
+                                        email.length > 0 && !isValidEmail(email) 
+                                            ? 'border-red-500 focus:border-red-500' 
+                                            : 'border-white/10 focus:border-brandRed'
+                                    }`} 
+                                />
+                                {email.length > 0 && !isValidEmail(email) && (
+                                    <p className="text-red-500 text-xs mt-1 font-mono">Please enter a valid email address.</p>
+                                )}
                             </div>
 
-                            <button type="button" className="btn-primary-red w-full py-3.5 rounded text-sm font-semibold tracking-wide uppercase flex items-center justify-center gap-2">
-                                <span>Download Strategic Brief</span>
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                </svg>
+                            <button 
+                                type="submit" 
+                                disabled={!isFormValid || isSubmitting || success}
+                                className={`w-full py-3.5 rounded text-sm font-semibold tracking-wide uppercase flex items-center justify-center gap-2 transition-all ${
+                                    success 
+                                        ? 'bg-green-600 text-white cursor-default'
+                                        : isFormValid 
+                                            ? 'btn-primary-red hover:opacity-90' 
+                                            : 'bg-white/10 text-white/40 cursor-not-allowed'
+                                }`}
+                            >
+                                {success ? (
+                                    <span>Download Started ✓</span>
+                                ) : isSubmitting ? (
+                                    <span>Processing...</span>
+                                ) : (
+                                    <>
+                                        <span>Download Strategic Brief</span>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                        </svg>
+                                    </>
+                                )}
                             </button>
 
                             <p className="text-[11px] text-textMuted text-center font-mono">

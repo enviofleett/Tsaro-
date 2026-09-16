@@ -27,18 +27,14 @@ export default function Commitments({ content }: { content?: any }) {
         <div className="max-w-7xl mx-auto">
             
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-20 gap-8">
-                <div className="md:w-1/2">
-                    <h2 
-                        className="text-4xl sm:text-5xl font-serif font-normal text-white tracking-tight leading-tight"
-                        dangerouslySetInnerHTML={{ __html: headline }}
-                    />
-                </div>
-                <div className="md:w-1/3">
-                    <p className="text-textMuted text-sm leading-relaxed">
-                        {subtitle}
-                    </p>
-                </div>
+            <div className="flex flex-col items-center text-center mb-20 gap-4 max-w-3xl mx-auto">
+                <h2 
+                    className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08]"
+                    dangerouslySetInnerHTML={{ __html: headline }}
+                />
+                <p className="text-white/80 text-lg sm:text-xl leading-relaxed">
+                    {subtitle}
+                </p>
             </div>
 
             {/* 2x2 Grid Section */}

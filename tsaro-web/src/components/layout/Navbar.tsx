@@ -40,8 +40,8 @@ export default async function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
             {/* Brand Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-                <img src="/tsaro-icon.png" alt="Tsaro Icon" className="h-9 sm:h-10 w-auto object-contain group-hover:opacity-90 transition-opacity" />
-                <img src="/tsaro-logo.png" alt="Tsaro Global Defence" className="h-6 sm:h-7 w-auto object-contain brightness-105 group-hover:opacity-90 transition-opacity" />
+                <img src="/tsaro-icon.png" alt="Tsaro Icon" className="h-11 sm:h-12 w-auto object-contain group-hover:opacity-90 transition-opacity" />
+                <img src="/tsaro-logo.png" alt="Tsaro Global Defence" className="h-7 sm:h-8 w-auto object-contain brightness-105 group-hover:opacity-90 transition-opacity" />
             </Link>
 
             {/* Navigation Links */}

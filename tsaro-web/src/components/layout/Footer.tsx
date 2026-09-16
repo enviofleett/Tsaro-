@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from '@/utils/supabase/server'
 
 export default async function Footer() {
@@ -32,10 +33,10 @@ export default async function Footer() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
                 
                 <div className="space-y-4">
-                    <a href="#" className="inline-flex items-center gap-3">
-                        <img src="/tsaro-icon.png" alt="Tsaro Icon" className="h-8 w-auto object-contain" />
-                        <img src="/tsaro-logo.png" alt="Tsaro Global Defence" className="h-5 w-auto object-contain brightness-105" />
-                    </a>
+                    <Link href="/" className="flex items-center gap-3 group inline-flex mb-6">
+                        <img src="/tsaro-icon.png" alt="Tsaro Icon" className="h-10 w-auto object-contain" />
+                        <img src="/tsaro-logo.png" alt="Tsaro Global Defence" className="h-6 w-auto object-contain brightness-105" />
+                    </Link>
                     <p className="text-textMuted text-sm leading-relaxed">
                         {description}
                     </p>
