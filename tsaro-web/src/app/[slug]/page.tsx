@@ -1,6 +1,16 @@
 import { createClient } from '@/utils/supabase/server'
 import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 import { notFound } from 'next/navigation'
+import HeroBanner from '@/components/sections/HeroBanner'
+import AuthorityBar from '@/components/sections/AuthorityBar'
+import CapabilityGrid from '@/components/sections/CapabilityGrid'
+import WhereWeOperate from '@/components/sections/WhereWeOperate'
+import OperationalDifferentiator from '@/components/sections/OperationalDifferentiator'
+import IntelligenceBriefs from '@/components/sections/IntelligenceBriefs'
+import ResearchInsights from '@/components/sections/ResearchInsights'
+import Commitments from '@/components/sections/Commitments'
+import TheInstitute from '@/components/sections/TheInstitute'
 
 export default async function DynamicPage({ params }: { params: { slug: string } }) {
   const { slug } = await params;
@@ -20,29 +30,26 @@ export default async function DynamicPage({ params }: { params: { slug: string }
       <main className="pt-24 min-h-screen">
         {/* Render CMS Sections */}
         {sections?.map(section => {
-          if (section.section_type === 'hero_banner') {
-            const content = section.content as any
-            return (
-              <section key={section.id} className="relative py-24 px-6 flex items-center justify-center tactical-mesh overflow-hidden border-b border-white/10">
-                  <div className="relative z-10 max-w-4xl mx-auto text-center">
-                      <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" dangerouslySetInnerHTML={{ __html: content.headline || page.title }} />
-                      {content.subheadline && <p className="text-lg text-textLight">{content.subheadline}</p>}
-                  </div>
-              </section>
-            )
-          }
-
+          if (section.section_type === 'hero_banner') return <HeroBanner key={section.id} content={section.content} />
+          if (section.section_type === 'authority_bar') return <AuthorityBar key={section.id} content={section.content} />
+          if (section.section_type === 'capability_grid') return <CapabilityGrid key={section.id} content={section.content} />
+          if (section.section_type === 'where_we_operate') return <WhereWeOperate key={section.id} content={section.content} />
+          if (section.section_type === 'operational_differentiator') return <OperationalDifferentiator key={section.id} content={section.content} />
+          if (section.section_type === 'commitments') return <Commitments key={section.id} content={section.content} />
+          if (section.section_type === 'institute') return <TheInstitute key={section.id} content={section.content} />
+          if (section.section_type === 'intelligence_briefs') return <IntelligenceBriefs key={section.id} content={section.content} />
+          if (section.section_type === 'research_insights') return <ResearchInsights key={section.id} content={section.content} />
           if (section.section_type === 'text_block') {
             const content = section.content as any
             return (
-              <section key={section.id} className="py-16 px-6 max-w-4xl mx-auto">
-                {content.title && <h2 className="text-2xl font-bold mb-6 text-brandRed">{content.title}</h2>}
+              <section key={section.id} className="py-20 px-6 max-w-7xl mx-auto">
+                <h2 className="text-3xl font-bold mb-6 text-brandRed">{content.title}</h2>
                 <div className="text-textLight leading-relaxed space-y-4" dangerouslySetInnerHTML={{ __html: content.body || 'Add text body' }} />
               </section>
             )
           }
 
-          return <div key={section.id} className="p-10 text-center border border-dashed border-white/20 m-6 text-textMuted rounded">Unsupported Section Type: {section.section_type}</div>
+          return <div key={section.id} className="p-10 border border-dashed border-white/20 m-6 text-textMuted rounded text-center">Unsupported Section Type: {section.section_type}</div>
         })}
 
         {(!sections || sections.length === 0) && (
@@ -52,6 +59,7 @@ export default async function DynamicPage({ params }: { params: { slug: string }
           </div>
         )}
       </main>
+      <Footer />
     </>
   )
 }

@@ -38,9 +38,7 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // Temporarily bypassing the strict 'admin' role check for local development
-    // so you can access the admin panel immediately after registering.
-    /*
+    // Enforce strict 'admin' role check
     const { data: roleData } = await supabase
       .from('user_roles')
       .select('role')
@@ -48,11 +46,10 @@ export async function updateSession(request: NextRequest) {
       .single()
       
     if (!roleData || roleData.role !== 'admin') {
-      // Logged in but not an admin -> redirect to home (or a 403 page)
+      // Logged in but not an admin -> redirect to home
       const homeUrl = new URL('/', request.url)
       return NextResponse.redirect(homeUrl)
     }
-    */
   }
 
   return supabaseResponse
