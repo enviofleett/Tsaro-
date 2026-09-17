@@ -1,22 +1,5 @@
 export default function ClientSectors({ content = {} }: { content?: any }) {
-  const sectors = content.sectors || [
-    {
-      title: 'Government Agencies and Offices',
-      desc: 'Our engagements with government agencies and offices reinforces our position as a full-suite security and defence contractor. From providing tactical security equipment to offering strategic security consultancy, we work closely with government entities to strengthen their operations.',
-      bullets: ['Tactical Security Hardware & Equipment Provisioning', 'Strategic Defence Consultancy & Risk Advisory', 'Institutional Operational Strengthening & Preparedness'],
-      logosImage: '/gov-logos.png',
-      logosLabel: 'Trusted By Sovereign Entities:',
-      footerTag: 'GOV & SOVEREIGN ACCREDITATION'
-    },
-    {
-      title: 'Private Corporations and Businesses',
-      desc: 'Leading corporations and businesses turn to us for comprehensive security solutions. Whether it\'s securing critical infrastructure, implementing cybersecurity measures, or ensuring the safety of their workforce, we collaborate with businesses to mitigate risks and safeguard their interests.',
-      bullets: ['Critical Infrastructure Defense & Monitoring', 'Workforce Safety, Executive Escort & Perimeter Systems', 'Enterprise Threat Mitigation & Risk Safeguarding'],
-      logosImage: '/private-logos.png',
-      logosLabel: 'Trusted By Private Enterprise:',
-      footerTag: 'MULTINATIONAL & PRIVATE SECTOR'
-    }
-  ]
+  const sectors = content.sectors || []
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-obsidian relative">

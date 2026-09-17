@@ -1,7 +1,7 @@
 export default function AboutHero({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'A Vanguard of <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-brandRed">Security & Defence.</span>'
-  const subheadline = content.subheadline || 'Tsaro Global Defence is a multinational private security firm with its operational headquarters in Nigeria and its subsidiary in the United States. We stand as a vanguard of security and defence, offering a spectrum of security products and services to a vast clientèle.'
-  const locations = content.locations || ['ABUJA, NIGERIA (HQ)', 'ORLANDO, FL, USA (SUBSIDIARY)']
+  const headline = content.headline || ''
+  const subheadline = content.subheadline || ''
+  const locations = content.locations || []
 
   return (
     <section className="relative pt-36 pb-20 px-6 lg:px-12 overflow-hidden tactical-mesh border-b border-white/5">

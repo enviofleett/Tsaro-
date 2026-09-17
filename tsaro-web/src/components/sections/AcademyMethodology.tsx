@@ -1,11 +1,7 @@
 export default function AcademyMethodology({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Evidence-Based Operational Mastery'
-  const subheadline = content.subheadline || 'We bridge theory and battlefield realities through structured field doctrine, ensuring graduates perform reliably under extreme duress.'
-  const pillars = content.pillars || [
-    { title: 'Kinetic & Non-Kinetic Integration', desc: 'Modern threats require balanced competency. We fuse marksmanship and combat tactics with crisis psychology, situational de-escalation, and intelligence gathering.' },
-    { title: 'Full-Spectrum Simulation', desc: 'Instruction takes place in dedicated shoot-houses, dynamic convoy routes, cyber laboratories, and emergency triage stations under realistic stress conditions.' },
-    { title: 'Sovereign & Enterprise Vetting', desc: 'Each candidate and organizational delegation undergoes background verification. Certifications are recognized across military, law enforcement, and corporate security councils.' }
-  ]
+  const headline = content.headline || ''
+  const subheadline = content.subheadline || ''
+  const pillars = content.pillars || []
 
   return (
     <section id="methodology" className="py-24 px-6 lg:px-12 bg-[#212126] border-t border-white/5">

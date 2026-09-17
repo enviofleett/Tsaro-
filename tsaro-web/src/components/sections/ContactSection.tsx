@@ -51,8 +51,8 @@ export default function ContactSection({ content }: { content?: any }) {
     }
   };
 
-  let displayHeadline = content?.headline || "Contact Command";
-  let displaySubheadline = content?.subheadline || "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context.";
+  let displayHeadline = content?.headline || "";
+  let displaySubheadline = content?.subheadline || "";
 
   if (displayHeadline.includes("Intelligence Briefs")) {
     displayHeadline = "Contact Command";
@@ -92,8 +92,8 @@ export default function ContactSection({ content }: { content?: any }) {
                                 </div>
                                 <div>
                                     <span className="block text-white font-bold mb-1 tracking-widest uppercase">Secure Comms</span>
-                                    {content?.email || 'info@tsaroglobaldefence.com'}<br/>
-                                    {content?.phone || '+234 704 341 9078'}
+                                    {content?.email || ''}<br/>
+                                    {content?.phone || ''}
                                 </div>
                             </div>
                         </div>

@@ -1,11 +1,7 @@
 export default function CoreValues({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Our Core Values'
-  const subheadline = content.subheadline || 'We promise not to compromise on any of these core values as they form the very essence of our existence and have informed our success over the years.'
-  const values = content.values || [
-    { title: 'Confidentiality', desc: 'Confidentiality is the bedrock of our operations at Tsaro. We understand the significance of safeguarding sensitive information and classified data. Our commitment to confidentiality ensures that the trust bestowed upon us by our clients and partners remains unfaltering as we treat every piece of information with utmost privacy.', tag: 'DATA & IDENTITY INTEGRITY' },
-    { title: 'Integrity', desc: 'At Tsaro, integrity is not just a value; it\'s a way of life. We uphold the highest ethical standards in every aspect of our work. Our unwavering commitment to honesty, transparency, and moral principles is a testament to our dedication to protecting client’s interests with honor and dignity.', tag: 'ETHICAL LEADERSHIP' },
-    { title: 'Professionalism', desc: 'Professionalism is the cornerstone of our services. We hold ourselves to the highest professional standards in every endeavor we undertake. Our team is composed of skilled, disciplined, and dedicated experts who bring their best to bear at every given opportunity, taking pride in consistently delivering excellence.', tag: 'DISCIPLINE & EXPERTISE' }
-  ]
+  const headline = content.headline || ''
+  const subheadline = content.subheadline || ''
+  const values = content.values || []
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-charcoal/40 border-y border-white/5 relative">

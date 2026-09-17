@@ -1,13 +1,13 @@
 export default function SplitNarrative({ content = {} }: { content?: any }) {
-  const image = content.image || '/hero-banner.png'
-  const overline = content.overline || 'TACTICAL PRECISION & RIGOR'
-  const badge = content.badge || 'ENTERPRISE STANDARD'
-  const headline = content.headline || 'Committed to Unwavering Excellence & Acute Precision'
-  const body = content.body || 'With a legacy deeply rooted in unwavering commitment and resolute pursuit of excellence, we employ methods and assets that guarantee acute precision and utmost professionalism in meeting security and defence needs.'
-  const quote = content.quote || '“We work closely with clients to individually select the best executive protection expert to match your criteria, profile and personal concerns.”'
-  const subbody = content.subbody || 'Amidst growing insecurity, Tsaro Global Defence offers superior protection for families, businesses, and assets. We bridge the gap with effective security solutions, ensuring peace of mind in an uncertain world.'
-  const btnText = content.btnText || 'Connect With Our Team'
-  const btnLink = content.btnLink || '/#contact'
+  const image = content.image || ''
+  const overline = content.overline || ''
+  const badge = content.badge || ''
+  const headline = content.headline || ''
+  const body = content.body || ''
+  const quote = content.quote || ''
+  const subbody = content.subbody || ''
+  const btnText = content.btnText || ''
+  const btnLink = content.btnLink || ''
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-obsidian relative">

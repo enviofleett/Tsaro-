@@ -1,7 +1,7 @@
 export default function ClienteleHero({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Trusted by Sovereign Entities & <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-brandRed">Global Corporations.</span>'
-  const subheadline = content.subheadline || 'We provide top-notch products and services to government agencies and private companies globally. Our engagements reinforce our position as a full-suite security and defence contractor, trusted across critical operations worldwide.'
-  const tags = content.tags || ['GOVERNMENT SECTORS', 'PRIVATE ENTERPRISE', 'CRITICAL INFRASTRUCTURE']
+  const headline = content.headline || ''
+  const subheadline = content.subheadline || ''
+  const tags = content.tags || []
 
   return (
     <section className="relative pt-36 pb-20 px-6 lg:px-12 overflow-hidden tactical-mesh border-b border-white/5">

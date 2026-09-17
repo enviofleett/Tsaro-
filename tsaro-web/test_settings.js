@@ -4,7 +4,7 @@ require('dotenv').config({ path: '.env.local' });
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 async function run() {
-  const { data, error } = await supabase.from('menu_items').select('*');
+  const { data, error } = await supabase.from('global_settings').select('*');
   console.log(data);
 }
 run();

@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import SectionForm from './SectionForm'
+import PageSettingsForm from './PageSettingsForm'
 
 
 function formatSectionType(type: string) {
@@ -22,15 +23,23 @@ export default async function EditPage({ params }: { params: { id: string } }) {
   async function updatePageDetails(formData: FormData) {
     'use server'
     const supabase = await createClient()
+    const pageId = formData.get('page_id') as string;
     
-    await supabase.from('pages').update({
+    const { error } = await supabase.from('pages').update({
       title: formData.get('title'),
       slug: formData.get('slug'),
       meta_description: formData.get('meta_description'),
       is_published: formData.get('is_published') === 'on'
-    }).eq('id', id)
+    }).eq('id', pageId)
     
-    revalidatePath(`/admin/pages/${id}`)
+    if (error) {
+      console.error('Error updating page:', error)
+      throw new Error(`Failed to save: ${error.message}`)
+    }
+    
+    revalidatePath(`/admin/pages/${pageId}`)
+    revalidatePath('/admin/pages')
+    revalidatePath(`/${formData.get('slug')}`)
   }
 
   
@@ -133,27 +142,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
         <div className="lg:col-span-1 space-y-8 sticky top-8 self-start">
           <div className="bg-charcoal border border-white/10 rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4 text-white">Page Settings</h2>
-            <form action={updatePageDetails} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-textLight mb-1">Title</label>
-                <input type="text" name="title" defaultValue={page.title} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-textLight mb-1">Slug</label>
-                <input type="text" name="slug" defaultValue={page.slug} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-textLight mb-1">Meta Description</label>
-                <textarea name="meta_description" defaultValue={page.meta_description} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white h-24" />
-              </div>
-              <div className="flex items-center gap-2">
-                <input type="checkbox" name="is_published" id="is_published" defaultChecked={page.is_published} className="w-4 h-4 accent-brandRed" />
-                <label htmlFor="is_published" className="text-sm font-medium text-textLight">Published</label>
-              </div>
-              <button type="submit" className="w-full btn-primary-red py-2 rounded font-semibold mt-2">
-                Save Settings
-              </button>
-            </form>
+            <PageSettingsForm page={page} updateAction={updatePageDetails} />
           </div>
         </div>
 
