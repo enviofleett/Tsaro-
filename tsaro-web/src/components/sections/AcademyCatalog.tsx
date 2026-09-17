@@ -8,12 +8,8 @@ export default function AcademyCatalog({ content = {} }: { content?: any }) {
   const [modalState, setModalState] = useState<'form' | 'success'>('form')
   const [selectedCourse, setSelectedCourse] = useState({ name: '', code: '', duration: '' })
 
-  const headline = content.headline || 'Tactical & Intelligence Programs'
-  const programs = content.programs || [
-    { type: 'kinetic', image: '/academy-marksmanship.jpg', badge: 'Kinetic • 2 Weeks', code: 'TMS-02', title: 'Tactical Marksmanship & Dynamic Engagement', desc: 'Advanced weapon manipulation and live-fire drills on tactical ranges. Emphasizes stress-fire target discrimination, low-light operations, and rapid primary-to-secondary transitions.', format: 'Live-Fire Range', prerequisite: 'Vetted LE / Armed', date: 'November 02, 2026', duration: '2 Weeks' },
-    { type: 'kinetic', image: '/academy-cqb.jpg', badge: 'Special Ops • 4 Weeks', code: 'CQB-03', title: 'Counter-Terrorism & Urban Combat (CQB)', desc: 'High-intensity simulation training in shoot-houses and structured urban environments. Teaches multi-room clearing, explosive/mechanical breaching, hostage recovery, and team coordination.', format: 'Shoot-House', prerequisite: 'Tier-1 / MIL', date: 'November 16, 2026', duration: '4 Weeks' },
-    { type: 'protection', image: '/academy-combat-medic.jpg', badge: 'Medical • 10 Days', code: 'TECC-04', title: 'Tactical Emergency Casualty Care', desc: 'Standardized operational medicine for hostile zones. Prepares personnel to halt massive hemorrhage, manage airway trauma under fire, and execute rapid tactical evacuation (CASEVAC).', format: 'Trauma Sim', prerequisite: 'Security & Med', date: 'October 26, 2026', duration: '10 Days' }
-  ]
+  const headline = content.headline || ''
+  const programs = content.programs || []
 
   const openBookingModal = (name: string, code: string, duration: string) => {
     setSelectedCourse({ name, code, duration })
@@ -44,7 +40,7 @@ export default function AcademyCatalog({ content = {} }: { content?: any }) {
             <button onClick={() => setFilter('all')} className={`pb-3 font-medium whitespace-nowrap ${filter === 'all' ? 'text-brandRed border-b-2 border-brandRed' : 'text-textMuted hover:text-white'}`}>
               All Disciplines
             </button>
-            {(content.categories || 'kinetic:Kinetic & Weapons, protection:Protection & Medical, intel:Cyber & Intelligence, infrastructure:Infrastructure Defence').split(',').map((catStr: string, idx: number) => {
+            {(content.categories || '').split(',').map((catStr: string, idx: number) => {
               const parts = catStr.split(':');
               const val = parts[0].trim();
               const label = parts[1] ? parts[1].trim() : val;

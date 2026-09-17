@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export default function WhereWeOperate({ content }: { content?: any }) {
-  const headline = content?.headline || "Where we operate";
+  const headline = content?.headline || "";
   
   // Default fallback matching the new client mockup
   const defaultImages = [

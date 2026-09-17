@@ -1,5 +1,5 @@
 export default function AuthorityBar({ content }: { content?: any }) {
-  const label = content?.label || 'OPERATIONAL ACCREDITATION & CAPABILITY'
+  const label = content?.label || ''
   const items: string[] = (content?.items && content.items.length > 0)
     ? content.items
     : [

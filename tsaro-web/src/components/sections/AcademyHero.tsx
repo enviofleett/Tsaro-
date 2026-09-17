@@ -1,14 +1,9 @@
 export default function AcademyHero({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Tsaro Defence & Security Academy'
-  const body = content.body || 'Essential training in kinetic and non-kinetic security, filling a vital gap across sovereign and corporate defense landscapes. We combine evidence-based methodology with rigorous scenario immersions for armed forces, law enforcement, and private security cadres.'
-  const primaryBtn = content.primaryBtn || { text: 'Explore Certified Programs', link: '#catalog' }
-  const secondaryBtn = content.secondaryBtn || { text: 'Training Methodology', link: '#methodology' }
-  const facts = content.facts || [
-    { value: '100%', label: 'Field-Veteran Instructors' },
-    { value: 'Tier-1', label: 'Accredited Tactical Ranges' },
-    { value: 'Kinetic +', label: 'Non-Kinetic Hybrid Doctrine' },
-    { value: 'Cohort', label: 'Small-Group Immersions' }
-  ]
+  const headline = content.headline || ''
+  const body = content.body || ''
+  const primaryBtn = content.primaryBtn || { text: '', link: '' }
+  const secondaryBtn = content.secondaryBtn || { text: '', link: '' }
+  const facts = content.facts || []
 
   return (
     <section className="relative pt-36 pb-24 px-6 lg:px-12 border-b border-white/5 bg-[#1A1A17]">

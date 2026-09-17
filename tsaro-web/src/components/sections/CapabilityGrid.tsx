@@ -1,25 +1,6 @@
 export default function CapabilityGrid({ content }: { content?: any }) {
   // Extract arms from content, or fallback to the new content with old layout
-  const arms = content?.arms || [
-    {
-      title: "Strategy & Public Sector Advisory",
-      description: "Policy design, regulatory structure, and the institutional groundwork a government needs settled before anything can be built on top of it.",
-      link: "#",
-      tag: "ARM 01"
-    },
-    {
-      title: "Delivery, Procurement & Construction",
-      description: "Programme management, supply chain, and construction oversight that carries a strategy through to something a minister can actually point to.",
-      link: "#",
-      tag: "ARM 02"
-    },
-    {
-      title: "Institute",
-      description: "A talent and convening arm — training programmes and a standing forum for the people who will run what we help build.",
-      link: "/academy",
-      tag: "ARM 03"
-    }
-  ]
+  const arms = content?.arms || []
 
   const svgs = [
     <svg key="1" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>,
@@ -35,10 +16,10 @@ export default function CapabilityGrid({ content }: { content?: any }) {
             <div className="text-center max-w-3xl mx-auto mb-16">
                 <h2 
                     className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight"
-                    dangerouslySetInnerHTML={{ __html: content?.title || "Two disciplines. <br /> One accountable firm." }}
+                    dangerouslySetInnerHTML={{ __html: content?.title || '' }}
                 />
                 <p className="text-textMuted text-base sm:text-lg">
-                    {content?.subtitle || "Most advisors stop at the strategy. We stay for the delivery."}
+                    {content?.subtitle || ''}
                 </p>
             </div>
 

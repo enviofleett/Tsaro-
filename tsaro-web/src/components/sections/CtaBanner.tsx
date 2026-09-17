@@ -1,8 +1,8 @@
 export default function CtaBanner({ content = {} }: { content?: any }) {
-  const headline = content.headline || 'Superior Protection in an Uncertain World'
-  const subheadline = content.subheadline || 'Amidst growing insecurity, Tsaro Global Defence offers superior protection for families, businesses, and assets. We bridge the gap with effective security solutions, ensuring peace of mind.'
-  const btnText = content.btnText || 'Initiate Client Briefing'
-  const btnLink = content.btnLink || '/#contact'
+  const headline = content.headline || ''
+  const subheadline = content.subheadline || ''
+  const btnText = content.btnText || ''
+  const btnLink = content.btnLink || ''
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-obsidian relative">

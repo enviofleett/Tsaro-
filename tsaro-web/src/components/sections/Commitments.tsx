@@ -1,26 +1,8 @@
 export default function Commitments({ content }: { content?: any }) {
-  const headline = content?.headline || "What we won't do<br />differently for speed."
-  const subtitle = content?.subtitle || content?.text_1 || "Three commitments that hold regardless of client, sector, or deadline."
+  const headline = content?.headline || ""
+  const subtitle = content?.subtitle || content?.text_1 || ""
   const items = (content?.items && content.items.length > 0)
-    ? content.items
-    : [
-        {
-          title: 'One firm, start to finish',
-          description: 'The team that designs the strategy stays accountable through delivery — not passed to a separate contractor at the point of highest risk.',
-        },
-        {
-          title: "Independence where it's structurally required",
-          description: 'Advisory and commercial roles are formally separated wherever both exist on the same engagement.',
-        },
-        {
-          title: 'Nothing built without governance to run it',
-          description: "Physical delivery never outruns the institutional capacity to operate what's been delivered.",
-        },
-        {
-          title: 'Built for the record',
-          description: 'Every recommendation is documented to withstand scrutiny long after the engagement ends.',
-        },
-      ]
+    ? content.items : []
 
   return (
     <section id="commitments" className="py-24 px-6 md:px-12 bg-obsidian relative">

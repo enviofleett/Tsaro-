@@ -46,8 +46,8 @@ export default function ResearchInsights({ content }: { content?: any }) {
       }))
     : DEFAULT_INSIGHTS;
 
-  const headline = content?.headline || "Research & Insights";
-  const subheadline = content?.subheadline || "Original analysis from the field — informed by operations, not observation.";
+  const headline = content?.headline || "";
+  const subheadline = content?.subheadline || "";
 
   const [expanded, setExpanded] = useState<number | null>(null);
 

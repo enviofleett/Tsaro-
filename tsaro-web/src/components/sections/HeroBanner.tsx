@@ -18,9 +18,9 @@ function extractYouTubeId(url: string): string | null {
 }
 
 export default function HeroBanner({ content }: { content?: any }) {
-  const headline = content?.headline || `Strategy that survives <br /> contact with the ground.`;
-  const subheadline = content?.subheadline || `We take on the kind of national and institutional problems that most firms will diagnose but few will stay to solve — carrying the work from the first policy question through to the contractors, budgets, and people who make it real.`;
-  const image_url = content?.image_url || "/hero-banner.png";
+  const headline = content?.headline || "";
+  const subheadline = content?.subheadline || "";
+  const image_url = content?.image_url || "";
   const video_url = content?.video_url || "";
 
   const youtubeId = useMemo(() => extractYouTubeId(video_url), [video_url]);
@@ -37,14 +37,14 @@ export default function HeroBanner({ content }: { content?: any }) {
                   <iframe
                     src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&iv_load_policy=3&fs=0`}
                     title="Background Video"
-                    allow="autoplay; encrypted-media"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen={false}
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                     style={{
-                      width: '177.78vh',   // 16:9 ratio — always covers
-                      height: '100vh',
-                      minWidth: '100%',
-                      minHeight: '100%',
+                      width: '100vw',
+                      height: '56.25vw', /* 16:9 aspect ratio (9/16 = 0.5625) */
+                      minHeight: '100vh',
+                      minWidth: '177.77vh', /* 16:9 aspect ratio (16/9 = 1.7777) */
                       border: 'none',
                     }}
                   />

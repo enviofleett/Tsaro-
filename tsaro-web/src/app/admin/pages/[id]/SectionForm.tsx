@@ -49,7 +49,11 @@ export default function SectionForm({ section, updateAction }: { section: any, u
           </div>
           <div>
             <label className="block text-sm font-medium text-textLight mb-1">Background Image URL</label>
-            <input type="text" name="image_url" value={content.image_url || ''} onChange={handleChange} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" placeholder="/hero-banner.png" />
+            <ImageUpload 
+              value={content.image_url || ''} 
+              onChange={(url) => setContent({ ...content, image_url: url })} 
+              placeholder="/hero-banner.png" 
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-textLight mb-1">Background Video URL (e.g., YouTube link)</label>
@@ -684,7 +688,7 @@ Abuja, Nigeria"
                   <label className="text-xs text-textMuted">Bullets (comma separated)</label>
                   <input type="text" placeholder="Bullet 1, Bullet 2" value={sector.bullets?.join(',') || ''} onChange={(e) => { const sectors = [...(content.sectors || [])]; sectors[i].bullets = e.target.value.split(',').map(s=>s.trim()); setContent({ ...content, sectors }) }} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 </div>
-                <input type="text" placeholder="Logos Image URL" value={sector.logosImage || ''} onChange={(e) => handleArrayChange('sectors', i, 'logosImage', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
+                <ImageUpload value={sector.logosImage || ''} onChange={(url) => handleArrayChange('sectors', i, 'logosImage', url)} placeholder="Logos Image URL" />
                 <input type="text" placeholder="Logos Label" value={sector.logosLabel || ''} onChange={(e) => handleArrayChange('sectors', i, 'logosLabel', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
                 <input type="text" placeholder="Footer Tag" value={sector.footerTag || ''} onChange={(e) => handleArrayChange('sectors', i, 'footerTag', e.target.value)} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm" />
               </div>

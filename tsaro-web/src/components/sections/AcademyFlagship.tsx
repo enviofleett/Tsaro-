@@ -6,21 +6,17 @@ export default function AcademyFlagship({ content = {} }: { content?: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalState, setModalState] = useState<'form' | 'success'>('form')
 
-  const badge = content.badge || 'FLAGSHIP COHORT SPOTLIGHT'
-  const image = content.image || '/academy-close-protection.jpg'
-  const imageBadge = content.imageBadge || 'Executive Detail • 3 Weeks'
-  const code = content.code || 'CPES-01'
-  const codeType = content.codeType || 'DIPLOMATIC CADRE'
-  const title = content.title || 'Close Protection & Executive Escort Specialist'
-  const desc = content.desc || 'An elite, intensive operational immersion designed for protective security details, corporate security directors, and diplomatic escorts. Covers principal motorcade tactics, evasive driving maneuvers, advance route profiling, and close-quarters protective drills under active threat conditions.'
-  const bullets = content.bullets || [
-    'Principal Foot Formations & Anti-Ambush Protocols',
-    'Armored Motorcade Tactics & Rapid Extraction',
-    'Threat Vector Profiling & Advance Reconnaissance'
-  ]
-  const startDate = content.startDate || content.date || '2026-10-15'
+  const badge = content.badge || ''
+  const image = content.image || ''
+  const imageBadge = content.imageBadge || ''
+  const code = content.code || ''
+  const codeType = content.codeType || ''
+  const title = content.title || ''
+  const desc = content.desc || ''
+  const bullets = content.bullets || []
+  const startDate = content.startDate || content.date || ''
   const endDate = content.endDate || ''
-  const timeRange = content.timeRange || '0900 - 1700 HRS'
+  const timeRange = content.timeRange || ''
   
   const formatDate = (dStr: string) => {
     if (!dStr) return '';

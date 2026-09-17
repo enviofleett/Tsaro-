@@ -1,6 +1,6 @@
 export default function OperationalDifferentiator({ content }: { content?: any }) {
-  const headline = content?.headline || 'Five stages, the same<br />firm throughout.'
-  const subtitle = content?.subtitle || content?.text_1 || 'No handoff between the people who wrote the plan and the people who built it.'
+  const headline = content?.headline || ''
+  const subtitle = content?.subtitle || content?.text_1 || ''
   const stages = (content?.stages && content.stages.length > 0)
     ? content.stages
     : [

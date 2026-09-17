@@ -1,6 +1,6 @@
 export default function PullQuote({ content = {} }: { content?: any }) {
-  const quote = content.quote || '“Our team brings decades of experience in navigating complex security landscapes across the globe. This broad expertise allows us to address contemporary threats and deliver tailored solutions to clients worldwide, ensuring readiness for the security challenges of tomorrow.”'
-  const author = content.author || 'TSARO GLOBAL DEFENCE — EXECUTIVE CONSULTANCY CADRE'
+  const quote = content.quote || ''
+  const author = content.author || ''
 
   return (
     <section className="py-20 px-6 lg:px-12 bg-[#212126] border-y border-white/5 relative">

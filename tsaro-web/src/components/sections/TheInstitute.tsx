@@ -12,8 +12,8 @@ function getDomain(url?: string): string {
 }
 
 export default function TheInstitute({ content }: { content?: any }) {
-  const headline = content?.headline || 'Where the next<br />generation of this work<br />gets built.'
-  const subtitle = content?.subtitle || content?.text_1 || 'Two standing platforms, separately run, feeding expertise back into everything above.'
+  const headline = content?.headline || ''
+  const subtitle = content?.subtitle || content?.text_1 || ''
   const platforms = (content?.platforms && content.platforms.length > 0)
     ? content.platforms
     : [
