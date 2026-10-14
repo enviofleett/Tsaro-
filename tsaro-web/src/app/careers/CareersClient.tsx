@@ -80,7 +80,7 @@ export default function CareersClient() {
             {[
               { role: 'Lead Tactical Data Scientist', division: 'Algorithmic Warfare', location: 'Hybrid / Orlando, FL', type: 'Full-Time' },
               { role: 'Field Operations Commander', division: 'Kinetic Deployments', location: 'Abuja, Nigeria', type: 'Contract' },
-              { role: 'Tactical Systems Infrastructure Engineer', division: 'Defense Technologies', location: 'Remote', type: 'Full-Time' },
+              { role: 'Toolbux', division: 'Defense Technologies', location: 'Remote', type: 'Full-Time' },
               { role: 'Geospatial Intelligence Analyst', division: 'Reconnaissance', location: 'Hybrid / Global', type: 'Full-Time' },
             ].map((job, idx) => (
               <div key={idx} className="group bg-charcoal/50 border border-white/5 hover:border-brandRed/50 rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between transition-all hover:shadow-[0_0_30px_-5px_rgba(230,32,32,0.15)] relative overflow-hidden">
