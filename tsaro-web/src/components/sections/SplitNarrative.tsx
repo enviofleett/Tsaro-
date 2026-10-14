@@ -1,4 +1,5 @@
-export default function SplitNarrative({ content = {} }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function SplitNarrative({ content = {} }: { content?: Record<string, any> }) {
   const image = content.image || ''
   const overline = content.overline || ''
   const badge = content.badge || ''
@@ -8,12 +9,13 @@ export default function SplitNarrative({ content = {} }: { content?: any }) {
   const subbody = content.subbody || ''
   const btnText = content.btnText || ''
   const btnLink = content.btnLink || ''
+  const variant = content.variant || 'image_left'
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-obsidian relative">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-6 relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+          <div className={`lg:col-span-6 relative ${variant === 'image_right' ? 'lg:order-last' : ''} rounded-2xl overflow-hidden border border-white/10 shadow-2xl`}>
             <div className="w-full h-[450px] overflow-hidden relative">
               <img src={image} alt="Split Narrative Image" className="w-full h-full object-cover object-center brightness-95 contrast-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-60"></div>
@@ -24,15 +26,15 @@ export default function SplitNarrative({ content = {} }: { content?: any }) {
             </div>
           </div>
           <div className="lg:col-span-6 flex flex-col justify-center">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-6" dangerouslySetInnerHTML={{ __html: headline }} />
-            <p className="text-textLight text-base sm:text-lg leading-relaxed mb-6 font-normal" dangerouslySetInnerHTML={{ __html: body }} />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-6" dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }} />
+            <p className="text-textLight text-base sm:text-lg leading-relaxed mb-6 font-normal" dangerouslySetInnerHTML={{ __html: sanitizeHtml(body) }} />
             {quote && (
               <div className="bg-charcoal p-6 rounded-xl mb-8 border border-white/5">
-                <p className="italic text-white text-base leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                <p className="italic text-white text-base leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: sanitizeHtml(quote) }} />
               </div>
             )}
             {subbody && (
-              <p className="text-textMuted text-sm leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: subbody }} />
+              <p className="text-textMuted text-sm leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: sanitizeHtml(subbody) }} />
             )}
             {btnText && (
               <div>

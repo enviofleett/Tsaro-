@@ -1,65 +1,50 @@
-"use client"
+"use client";
+import { sanitizeHtml } from '@/lib/validation/sanitize';
 
 import { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { submitContactMessage } from '@/app/actions/submitContact';
 
-export default function ContactSection({ content }: { content?: any }) {
+export default function ContactSection({ content }: { content?: Record<string, any> }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const supabase = createClient();
-
-  const isValidEmail = (email: string) => {
+    const isValidEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const isFormValid = fullName.trim().length > 0 && isValidEmail(email) && message.trim().length > 0;
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
 
     setIsSubmitting(true);
+    setErrorMessage("");
 
-    try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([{ 
-            name: fullName.trim(), 
-            email: email.trim(),
-            message: message.trim()
-        }]);
+    const formData = new FormData();
+    formData.append('name', fullName);
+    formData.append('email', email);
+    formData.append('message', message);
 
-      if (error) {
-        console.error("Error saving message:", error);
-      }
-
+    const result = await submitContactMessage(formData);
+    
+    if (result.success) {
       setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-        setFullName("");
-        setEmail("");
-        setMessage("");
-      }, 5000);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      setErrorMessage(result.error || "A transmission error occurred.");
     }
+    
+    setIsSubmitting(false);
   };
 
-  let displayHeadline = content?.headline || "";
-  let displaySubheadline = content?.subheadline || "";
 
-  if (displayHeadline.includes("Intelligence Briefs")) {
-    displayHeadline = "Contact Command";
-  }
-  if (displaySubheadline.includes("geopolitical")) {
-    displaySubheadline = "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context.";
-  }
+    const displayHeadline = content?.headline || "Secure Communications";
+  const displaySubheadline = content?.subheadline || "Initiate a secure dialogue with our executive team. For urgent institutional requirements or bespoke operational inquiries, please provide detailed context.";
 
   return (
     <section id="contact" className="py-24 px-6 md:px-12 bg-obsidian relative border-t border-white/5">
@@ -83,7 +68,7 @@ export default function ContactSection({ content }: { content?: any }) {
                                 </div>
                                 <div>
                                     <span className="block text-white font-bold mb-1 tracking-widest uppercase">Global Operations Center</span>
-                                    {content?.address ? <span dangerouslySetInnerHTML={{ __html: content.address.replace(/\n/g, '<br/>') }} /> : <>Suite 600, 6th Floor, Sector A,<br/>Shashilga Court, Ahmadu Bello Way,<br/>Abuja, Nigeria</>}
+                                    {content?.address ? <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(content.address.replace(/\n/g, '<br/>')) }} /> : <>Suite 600, 6th Floor, Sector A,<br/>Shashilga Court, Ahmadu Bello Way,<br/>Abuja, Nigeria</>}
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">

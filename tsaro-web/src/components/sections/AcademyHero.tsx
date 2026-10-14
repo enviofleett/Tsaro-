@@ -1,4 +1,5 @@
-export default function AcademyHero({ content = {} }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function AcademyHero({ content = {} }: { content?: Record<string, any> }) {
   const headline = content.headline || ''
   const body = content.body || ''
   const primaryBtn = content.primaryBtn || { text: '', link: '' }
@@ -9,8 +10,8 @@ export default function AcademyHero({ content = {} }: { content?: any }) {
     <section className="relative pt-36 pb-24 px-6 lg:px-12 border-b border-white/5 bg-[#1A1A17]">
       <div className="max-w-6xl mx-auto">
         <div className="max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-[1.1] mb-6" dangerouslySetInnerHTML={{ __html: headline }} />
-          <p className="text-lg sm:text-xl text-textLight leading-relaxed font-sans mb-8" dangerouslySetInnerHTML={{ __html: body }} />
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-[1.1] mb-6" dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }} />
+          <p className="text-lg sm:text-xl text-textLight leading-relaxed font-sans mb-8" dangerouslySetInnerHTML={{ __html: sanitizeHtml(body) }} />
           <div className="flex flex-wrap items-center gap-4 pt-2">
             {primaryBtn && primaryBtn.text && (
               <a href={primaryBtn.link} className="btn-primary-red px-6 py-3.5 rounded-lg text-xs font-semibold tracking-wider uppercase inline-flex items-center gap-2">
@@ -26,7 +27,7 @@ export default function AcademyHero({ content = {} }: { content?: any }) {
           </div>
         </div>
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/10">
-          {facts.map((f: any, i: number) => (
+          {facts.map((f: Record<string, any>, i: number) => (
             <div key={i}>
               <div className="text-2xl sm:text-3xl font-sans font-bold text-white">{f.value}</div>
               <div className="text-xs text-textMuted mt-1">{f.label}</div>

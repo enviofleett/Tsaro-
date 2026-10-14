@@ -1,10 +1,11 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 
 export default async function AdminDashboard() {
   let pageCount = 0
   let menuCount = 0
   let sectionCount = 0
-  let recentSections: any[] = []
+  let recentSections: Record<string, any>[] = []
 
   try {
     const supabase = await createClient()
@@ -68,6 +69,7 @@ export default async function AdminDashboard() {
                     {s.section_type?.replace(/_/g, ' ')}
                   </span>
                   <span className="text-sm text-textLight">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {(s as any).pages?.title || 'Unknown Page'}
                   </span>
                 </div>

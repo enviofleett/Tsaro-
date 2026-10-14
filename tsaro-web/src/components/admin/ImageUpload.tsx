@@ -1,86 +1,66 @@
-"use client";
+'use client';
 
-import { useState, useRef } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { useState } from 'react';
+import MediaPickerModal from './MediaPickerModal';
 
 interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   placeholder?: string;
-  accept?: string;
 }
 
-export default function ImageUpload({ value, onChange, placeholder, accept }: ImageUploadProps) {
-  const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const supabase = createClient();
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setIsUploading(true);
-      setError(null);
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
-      const filePath = `uploads/${fileName}`;
-
-      const { data, error: uploadError } = await supabase.storage
-        .from('media')
-        .upload(filePath, file, { upsert: false });
-
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrlData } = supabase.storage
-        .from('media')
-        .getPublicUrl(filePath);
-
-      onChange(publicUrlData.publicUrl);
-    } catch (err: any) {
-      console.error('Error uploading file:', err);
-      setError(err.message || 'Error uploading file');
-    } finally {
-      setIsUploading(false);
-      // Reset input so the same file can be selected again if needed
-      if (fileInputRef.current) fileInputRef.current.value = '';
-    }
-  };
+export default function ImageUpload({ value, onChange, placeholder }: ImageUploadProps) {
+  const [showPicker, setShowPicker] = useState(false);
 
   return (
     <div className="space-y-2">
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder || "File URL"}
-          className="flex-1 px-4 py-2 bg-deepGray border border-white/10 rounded text-white text-sm"
-        />
+      {!value ? (
         <button
           type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploading}
-          className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded text-white text-sm transition-colors whitespace-nowrap"
+          onClick={() => setShowPicker(true)}
+          className="w-full h-32 border-2 border-dashed border-white/20 hover:border-brandRed hover:bg-brandRed/5 rounded-lg flex flex-col items-center justify-center gap-2 text-textMuted hover:text-white transition-colors"
         >
-          {isUploading ? 'Uploading...' : 'Upload File'}
+          <svg className="w-8 h-8 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span className="text-sm font-medium">Click to Choose or Upload Image</span>
         </button>
-      </div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleUpload}
-        accept={accept || "image/*"}
-        className="hidden"
-      />
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-      {value && value.startsWith('http') && (accept === undefined || accept.includes('image')) && (
-        <div className="mt-2 relative w-32 h-20 rounded border border-white/10 overflow-hidden bg-deepGray/50">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Preview" className="w-full h-full object-cover" />
+      ) : (
+        <div className="relative group rounded-lg overflow-hidden border border-white/20 bg-deepGray">
+          {value.startsWith('http') || value.startsWith('/') ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={value} alt="Preview" className="w-full h-48 object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+          ) : (
+            <div className="w-full h-48 flex items-center justify-center bg-black/40">
+              <span className="text-xs text-textMuted truncate max-w-full px-4">{value}</span>
+            </div>
+          )}
+          
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => setShowPicker(true)}
+              className="px-4 py-2 bg-white text-black rounded text-sm font-bold hover:bg-gray-200 transition-colors"
+            >
+              Change Image
+            </button>
+            <button
+              type="button"
+              onClick={() => onChange('')}
+              className="px-4 py-2 bg-brandRed text-white rounded text-sm font-bold hover:bg-red-700 transition-colors"
+            >
+              Remove
+            </button>
+          </div>
         </div>
+      )}
+
+      {showPicker && (
+        <MediaPickerModal 
+          onSelect={(url) => {
+            onChange(url);
+            setShowPicker(false);
+          }} 
+          onClose={() => setShowPicker(false)} 
+        />
       )}
     </div>
   );

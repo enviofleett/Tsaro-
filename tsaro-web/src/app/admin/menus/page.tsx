@@ -1,11 +1,14 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import MenuItemForm from '@/components/admin/MenuItemForm'
 
 export default async function MenusManager() {
   const supabase = await createClient()
+  const { data: pages } = await supabase.from('pages').select('id, title, slug').order('title');
 
-  const { data: menu } = await supabase.from('menus').select('*').eq('name', 'main_header').maybeSingle()
-  let menuItems: any[] = []
+  const { data: menu } = await supabase.from('menus').select('*, pages(slug)').eq('name', 'main_header').maybeSingle()
+  let menuItems: Record<string, any>[] = []
   
   if (menu) {
     const { data: items } = await supabase.from('menu_items').select('*').eq('menu_id', menu.id).order('sort_order')
@@ -14,6 +17,7 @@ export default async function MenusManager() {
 
   async function initializeMainMenu() {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     const { data: newMenu } = await supabase.from('menus').insert({ name: 'main_header', description: 'Primary top navigation' }).select().single()
     if (newMenu) {
@@ -29,35 +33,73 @@ export default async function MenusManager() {
     revalidatePath('/admin/menus')
   }
 
+  
   async function createMenuItem(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
-    const parent_id = formData.get('parent_id') as string
-    const { data: items } = await supabase.from('menu_items').select('sort_order').eq('menu_id', formData.get('menu_id'))
-    const nextOrder = items ? items.length : 0
+    
+    const menu_id = formData.get('menu_id') as string;
+    const label = formData.get('label') as string;
+    const parent_id = formData.get('parent_id') as string;
+    const link_type = formData.get('link_type') as string || 'custom';
+    const page_id = formData.get('page_id') as string;
+    const url = formData.get('url') as string;
 
-    await supabase.from('menu_items').insert({
-      menu_id: formData.get('menu_id'),
-      parent_id: parent_id ? parent_id : null,
-      label: formData.get('label'),
-      url: formData.get('url'),
-      sort_order: nextOrder
-    })
+    const { data: items } = await supabase.from('menu_items').select('sort_order').eq('menu_id', menu_id);
+    const maxSort = items && items.length > 0 ? Math.max(...items.map(s => s.sort_order || 0)) : 0;
+
+    const insertData: Record<string, any> = {
+      menu_id,
+      label,
+      sort_order: maxSort + 1,
+      link_type
+    };
+
+    if (parent_id) insertData.parent_id = parent_id;
+    if (link_type === 'page' && page_id) {
+      insertData.page_id = page_id;
+      insertData.url = null;
+    } else {
+      insertData.url = url;
+    }
+
+    const { error } = await supabase.from('menu_items').insert(insertData);
+    if (error) console.error(error);
     revalidatePath('/admin/menus')
   }
 
+
+  
   async function editMenuItem(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
-    await supabase.from('menu_items').update({
-      label: formData.get('label'),
-      url: formData.get('url')
-    }).eq('id', formData.get('id'))
+    const id = formData.get('id') as string;
+    const label = formData.get('label') as string;
+    const link_type = formData.get('link_type') as string;
+    const page_id = formData.get('page_id') as string;
+    const url = formData.get('url') as string;
+
+    const updateData: Record<string, any> = { label };
+    if (link_type) updateData.link_type = link_type;
+    if (link_type === 'page' && page_id) {
+      updateData.page_id = page_id;
+      updateData.url = null;
+    } else if (url) {
+      updateData.url = url;
+      updateData.page_id = null;
+    }
+
+    const { error } = await supabase.from('menu_items').update(updateData).eq('id', id);
+    if (error) console.error(error);
     revalidatePath('/admin/menus')
   }
+
 
   async function deleteMenuItem(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     await supabase.from('menu_items').delete().eq('id', formData.get('id'))
     revalidatePath('/admin/menus')
@@ -65,6 +107,7 @@ export default async function MenusManager() {
 
   async function moveMenuItem(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     const id = formData.get('id') as string
     const direction = formData.get('direction') as string
@@ -140,10 +183,10 @@ export default async function MenusManager() {
                           </form>
                         </div>
                         
-                        <form action={editMenuItem} className="flex-1 flex gap-4 items-center">
+                        <form action={editMenuItem} className="flex-1 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                           <input type="hidden" name="id" value={item.id} />
                           <input type="text" name="label" defaultValue={item.label} className="font-semibold text-white text-[15px] bg-transparent border border-transparent focus:border-white/20 focus:bg-black/20 focus:outline-none rounded px-2 py-1 w-1/3 hover:bg-black/10 transition-colors" />
-                          <input type="text" name="url" defaultValue={item.url} className="text-textMuted text-xs font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/20 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/10 transition-colors" />
+                          <input type="text" name="url" defaultValue={item.link_type === 'page' && item.pages ? '/' + item.pages.slug : item.url} className="text-textMuted text-xs font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/20 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/10 transition-colors" />
                           <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-white/10 hover:bg-white text-white hover:text-black rounded opacity-0 group-hover:opacity-100 transition-all focus:opacity-100">Save</button>
                         </form>
                       </div>
@@ -179,10 +222,10 @@ export default async function MenusManager() {
                                 <svg className="w-3 h-3 text-textMuted shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                               </div>
                               
-                              <form action={editMenuItem} className="flex-1 flex gap-3 items-center">
+                              <form action={editMenuItem} className="flex-1 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                                 <input type="hidden" name="id" value={sub.id} />
                                 <input type="text" name="label" defaultValue={sub.label} className="font-medium text-white/90 text-sm bg-transparent border border-transparent focus:border-white/20 focus:bg-black/40 focus:outline-none rounded px-2 py-1 w-1/3 hover:bg-black/20 transition-colors" />
-                                <input type="text" name="url" defaultValue={sub.url} className="text-textMuted text-[10px] font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/40 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/20 transition-colors" />
+                                <input type="text" name="url" defaultValue={sub.link_type === 'page' && sub.pages ? '/' + sub.pages.slug : sub.url} className="text-textMuted text-[10px] font-mono bg-transparent border border-transparent focus:border-white/20 focus:bg-black/40 focus:outline-none rounded px-2 py-1 w-1/2 hover:bg-black/20 transition-colors" />
                                 <button type="submit" className="text-xs font-semibold px-2 py-1 bg-white/10 hover:bg-white text-white hover:text-black rounded opacity-0 group-hover/sub:opacity-100 transition-all focus:opacity-100">Save</button>
                               </form>
                             </div>
@@ -202,34 +245,10 @@ export default async function MenusManager() {
 
             {/* Add New Link Form */}
             <div className="bg-white/5 border border-white/10 rounded-lg p-5">
-              <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Add New Link</h4>
-              <form action={createMenuItem} className="flex flex-col sm:flex-row gap-4 items-end">
-                <input type="hidden" name="menu_id" value={menu.id} />
-                
-                <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-textLight mb-1.5">Link Name</label>
-                  <input type="text" name="label" required className="w-full px-4 py-2.5 bg-deepGray border border-white/10 rounded text-white text-sm focus:border-brandRed outline-none" />
-                </div>
-                
-                <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-textLight mb-1.5">URL</label>
-                  <input type="text" name="url" required className="w-full px-4 py-2.5 bg-deepGray border border-white/10 rounded text-white text-sm focus:border-brandRed outline-none" />
-                </div>
+              
+<h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Add New Link</h4>
+<MenuItemForm menuId={menu.id} topLevelItems={topLevelItems} pages={pages || []} action={createMenuItem} />
 
-                <div className="flex-1 w-full max-w-[200px]">
-                  <label className="block text-xs font-medium text-textLight mb-1.5">Attach Dropdown To (Optional)</label>
-                  <select name="parent_id" className="w-full px-4 py-2.5 bg-deepGray border border-white/10 rounded text-white text-sm focus:border-brandRed outline-none">
-                    <option value="">-- No Dropdown (Top Level) --</option>
-                    {topLevelItems.map(item => (
-                      <option key={item.id} value={item.id}>{item.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <button type="submit" className="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded font-semibold text-sm transition-colors">
-                  + Add
-                </button>
-              </form>
             </div>
           </div>
         </div>

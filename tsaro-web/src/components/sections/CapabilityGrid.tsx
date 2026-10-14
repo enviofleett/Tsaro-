@@ -1,4 +1,5 @@
-export default function CapabilityGrid({ content }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function CapabilityGrid({ content }: { content?: Record<string, any> }) {
   // Extract arms from content, or fallback to the new content with old layout
   const arms = content?.arms || []
 
@@ -16,7 +17,7 @@ export default function CapabilityGrid({ content }: { content?: any }) {
             <div className="text-center max-w-3xl mx-auto mb-16">
                 <h2 
                     className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight"
-                    dangerouslySetInnerHTML={{ __html: content?.title || '' }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(content?.title || '') }}
                 />
                 <p className="text-textMuted text-base sm:text-lg">
                     {content?.subtitle || ''}
@@ -26,7 +27,7 @@ export default function CapabilityGrid({ content }: { content?: any }) {
             {/* Grid Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
-                {arms.map((arm: any, index: number) => (
+                {arms.map((arm: Record<string, any>, index: number) => (
                     <div key={index} className="capability-card rounded-xl p-8 flex flex-col justify-between group">
                         <div>
                             <div className="w-12 h-12 rounded bg-[#161B22] border border-white/10 flex items-center justify-center text-brandRed mb-6">

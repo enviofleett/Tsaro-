@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
 export default async function CareersDashboard() {
@@ -8,6 +9,15 @@ export default async function CareersDashboard() {
     .from('career_applications')
     .select('*')
     .order('created_at', { ascending: false })
+
+  const applicationsWithUrls = applications ? await Promise.all(applications.map(async (app: Record<string, any>) => {
+    if (app.cv_url) {
+      // Generate a short-lived 60-second signed URL for security
+      const { data } = await supabase.storage.from('cvs').createSignedUrl(app.cv_url, 60);
+      return { ...app, signed_cv_url: data?.signedUrl || null };
+    }
+    return app;
+  })) : [];
 
   return (
     <div>
@@ -19,7 +29,7 @@ export default async function CareersDashboard() {
         {error ? (
           <div className="p-10 text-center text-textMuted border border-dashed border-white/10 m-6 rounded-lg">
             <p className="text-brandRed mb-2 font-bold">Database Error Detected</p>
-            <p className="text-sm">Could not load applications. Have you created the <code>career_applications</code> table in Supabase yet?</p>
+            <p className="text-sm">Could not load applications.</p>
           </div>
         ) : applications && applications.length > 0 ? (
           <div className="overflow-x-auto">
@@ -35,7 +45,7 @@ export default async function CareersDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {applications.map((app: any) => (
+                {applicationsWithUrls.map((app: Record<string, any>) => (
                   <tr key={app.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-textMuted">
                       {new Date(app.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -51,9 +61,9 @@ export default async function CareersDashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      {app.cv_url ? (
+                      {app.signed_cv_url ? (
                         <a 
-                          href={app.cv_url} 
+                          href={app.signed_cv_url || "#"} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-brandRed/10 border border-brandRed/30 text-brandRed hover:bg-brandRed hover:text-white transition-all text-xs font-semibold uppercase tracking-wider"

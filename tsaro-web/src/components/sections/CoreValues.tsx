@@ -1,4 +1,5 @@
-export default function CoreValues({ content = {} }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function CoreValues({ content = {} }: { content?: Record<string, any> }) {
   const headline = content.headline || ''
   const subheadline = content.subheadline || ''
   const values = content.values || []
@@ -7,11 +8,11 @@ export default function CoreValues({ content = {} }: { content?: any }) {
     <section className="py-24 px-6 lg:px-12 bg-charcoal/40 border-y border-white/5 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight" dangerouslySetInnerHTML={{ __html: headline }} />
-          <p className="text-textMuted text-base sm:text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: subheadline }} />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight" dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }} />
+          <p className="text-textMuted text-base sm:text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(subheadline) }} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {values.map((v: any, i: number) => (
+          {values.map((v: Record<string, any>, i: number) => (
             <div key={i} className="value-card rounded-xl p-8 flex flex-col justify-between border border-white/5 bg-[#18181B]">
               <div>
                 <div className="w-12 h-12 rounded bg-[#212126] border border-white/10 flex items-center justify-center text-brandRed mb-6">

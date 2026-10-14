@@ -1,14 +1,16 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export default async function MediaLibrary() {
   const supabase = await createClient()
 
   // Fetch files from 'assets' bucket
-  const { data: files, error } = await supabase.storage.from('assets').list()
+  const { data: files, error } = await supabase.storage.from('media').list()
 
   async function uploadFile(formData: FormData) {
     'use server'
+    await requireAdmin();
     const file = formData.get('file') as File
     if (!file || file.size === 0) return
 
@@ -16,17 +18,18 @@ export default async function MediaLibrary() {
     const fileExt = file.name.split('.').pop()
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
     
-    await supabase.storage.from('assets').upload(fileName, file)
+    await supabase.storage.from('media').upload(fileName, file)
     revalidatePath('/admin/media')
   }
 
   async function deleteFile(formData: FormData) {
     'use server'
+    await requireAdmin();
     const fileName = formData.get('fileName') as string
     if (!fileName) return
 
     const supabase = await createClient()
-    await supabase.storage.from('assets').remove([fileName])
+    await supabase.storage.from('media').remove([fileName])
     revalidatePath('/admin/media')
   }
 
@@ -61,7 +64,7 @@ export default async function MediaLibrary() {
           if (file.name === '.emptyFolderPlaceholder') return null
 
           // Get public URL
-          const { data: { publicUrl } } = supabase.storage.from('assets').getPublicUrl(file.name)
+          const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(file.name)
 
           return (
             <div key={file.id} className="bg-charcoal border border-white/10 rounded-lg overflow-hidden group">

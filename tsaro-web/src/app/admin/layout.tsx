@@ -1,7 +1,17 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/app/login/actions'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Admin Command Console',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+}
 
 export default async function AdminLayout({
   children,
@@ -19,8 +29,7 @@ export default async function AdminLayout({
   }
 
   // Check if user has 'admin' role in user_roles table
-  /*
-  const { data: roleData } = await supabase.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+    const { data: roleData } = await supabase.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
   if (roleData?.role !== 'admin') { 
     return (
       <div className="min-h-screen bg-obsidian flex items-center justify-center p-6 text-center">
@@ -34,20 +43,19 @@ export default async function AdminLayout({
       </div>
     )
   }
-  */
 
   return (
     <div className="min-h-screen bg-obsidian text-white flex flex-col">
       {/* Top Header Navigation */}
       <header className="w-full bg-charcoal border-b border-white/10 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex flex-wrap justify-between items-center min-h-[4rem] gap-4 py-2">
             <div className="flex items-center">
               <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-brandRed mr-8">
                 Tsaro CMS
               </h2>
               
-              <nav className="hidden md:flex space-x-2">
+              <nav className="flex flex-wrap gap-2">
                 <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-textLight hover:bg-white/5 hover:text-white transition-colors whitespace-nowrap">
                   <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                   Dashboard

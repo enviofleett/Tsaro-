@@ -1,4 +1,5 @@
-export default function AboutHero({ content = {} }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function AboutHero({ content = {} }: { content?: Record<string, any> }) {
   const headline = content.headline || ''
   const subheadline = content.subheadline || ''
   const locations = content.locations || []
@@ -6,8 +7,8 @@ export default function AboutHero({ content = {} }: { content?: any }) {
   return (
     <section className="relative pt-36 pb-20 px-6 lg:px-12 overflow-hidden tactical-mesh border-b border-white/5">
       <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-8" dangerouslySetInnerHTML={{ __html: headline }} />
-        <p className="text-lg sm:text-xl text-textLight leading-relaxed max-w-3xl mx-auto font-normal" dangerouslySetInnerHTML={{ __html: subheadline }} />
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-8" dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }} />
+        <p className="text-lg sm:text-xl text-textLight leading-relaxed max-w-3xl mx-auto font-normal" dangerouslySetInnerHTML={{ __html: sanitizeHtml(subheadline) }} />
 
         {locations.length > 0 && (
           <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-xs font-mono text-textMuted border-t border-white/10 pt-8 max-w-xl mx-auto">

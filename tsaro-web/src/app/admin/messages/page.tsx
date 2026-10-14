@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 
 export default async function MessagesDashboard() {
   const supabase = await createClient()
@@ -18,7 +19,7 @@ export default async function MessagesDashboard() {
         {error ? (
           <div className="p-10 text-center text-textMuted border border-dashed border-white/10 m-6 rounded-lg">
             <p className="text-brandRed mb-2 font-bold">Database Error Detected</p>
-            <p className="text-sm">Could not load messages. Have you created the <code>contact_messages</code> table in Supabase yet?</p>
+            <p className="text-sm">Could not load messages.</p>
           </div>
         ) : messages && messages.length > 0 ? (
           <div className="overflow-x-auto">
@@ -32,7 +33,7 @@ export default async function MessagesDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {messages.map((msg: any) => (
+                {messages.map((msg: Record<string, any>) => (
                   <tr key={msg.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-textMuted">
                       {new Date(msg.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}

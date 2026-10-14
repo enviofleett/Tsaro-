@@ -1,11 +1,11 @@
-export default function ClientSectors({ content = {} }: { content?: any }) {
+export default function ClientSectors({ content = {} }: { content?: Record<string, any> }) {
   const sectors = content.sectors || []
 
   return (
     <section className="py-24 px-6 lg:px-12 bg-obsidian relative">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {sectors.map((sector: any, index: number) => (
+          {sectors.map((sector: Record<string, any>, index: number) => (
             <div key={index} className="rounded-2xl p-8 sm:p-12 flex flex-col justify-between bg-[#212126] border border-white/10 shadow-2xl">
               <div>
                 <div className="w-14 h-14 rounded-lg bg-[#18181B] border border-white/10 flex items-center justify-center text-brandRed mb-8">

@@ -1,4 +1,14 @@
-import { login, signup } from './actions'
+import type { Metadata } from 'next'
+import { login } from './actions'
+
+export const metadata: Metadata = {
+  title: 'Secure Access & Console Authentication',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+}
 
 export default async function LoginPage({
   searchParams,
@@ -64,15 +74,7 @@ export default async function LoginPage({
               </svg>
             </button>
 
-            {/* Note: In a real production app, you might want to remove the signup button 
-                after the first admin registers, or hide it behind a specific invite link. */}
-            <button
-              formAction={signup}
-              className="w-full px-4 py-3 rounded text-sm font-semibold tracking-wider uppercase border border-white/15 bg-white/5 hover:bg-white/10 text-textLight transition-all"
-            >
-              First Time Setup (Register)
-            </button>
-          </div>
+            </div>
         </form>
       </div>
     </div>

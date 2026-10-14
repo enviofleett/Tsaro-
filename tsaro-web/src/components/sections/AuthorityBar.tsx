@@ -1,4 +1,4 @@
-export default function AuthorityBar({ content }: { content?: any }) {
+export default function AuthorityBar({ content }: { content?: Record<string, any> }) {
   const label = content?.label || ''
   const items: string[] = (content?.items && content.items.length > 0)
     ? content.items

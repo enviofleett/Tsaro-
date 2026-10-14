@@ -1,4 +1,5 @@
-export default function OperationalDifferentiator({ content }: { content?: any }) {
+import { sanitizeHtml } from '@/lib/validation/sanitize';
+export default function OperationalDifferentiator({ content }: { content?: Record<string, any> }) {
   const headline = content?.headline || ''
   const subtitle = content?.subtitle || content?.text_1 || ''
   const stages = (content?.stages && content.stages.length > 0)
@@ -35,7 +36,7 @@ export default function OperationalDifferentiator({ content }: { content?: any }
                 <div className="md:w-1/2">
                     <h2 
                         className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08]"
-                        dangerouslySetInnerHTML={{ __html: headline }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }}
                     />
                 </div>
                 <div className="md:w-1/3">
@@ -47,7 +48,7 @@ export default function OperationalDifferentiator({ content }: { content?: any }
 
             {/* 5-Column Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-white/10 rounded-sm">
-                {stages.map((stage: any, index: number) => {
+                {stages.map((stage: Record<string, any>, index: number) => {
                     const isLast = index === stages.length - 1
                     return (
                         <div 

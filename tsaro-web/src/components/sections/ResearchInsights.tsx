@@ -35,9 +35,9 @@ const DEFAULT_INSIGHTS: InsightCard[] = [
   },
 ];
 
-export default function ResearchInsights({ content }: { content?: any }) {
+export default function ResearchInsights({ content }: { content?: Record<string, any> }) {
   const insights: InsightCard[] = content?.insights?.length
-    ? content.insights.map((item: any) => ({
+    ? content.insights.map((item: Record<string, any>) => ({
         category: item.category || "",
         title: item.title || "",
         excerpt: item.excerpt || "",

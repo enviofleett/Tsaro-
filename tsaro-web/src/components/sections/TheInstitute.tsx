@@ -1,3 +1,4 @@
+import { sanitizeHtml } from '@/lib/validation/sanitize';
 import Link from 'next/link';
 
 function getDomain(url?: string): string {
@@ -11,7 +12,7 @@ function getDomain(url?: string): string {
   }
 }
 
-export default function TheInstitute({ content }: { content?: any }) {
+export default function TheInstitute({ content }: { content?: Record<string, any> }) {
   const headline = content?.headline || ''
   const subtitle = content?.subtitle || content?.text_1 || ''
   const platforms = (content?.platforms && content.platforms.length > 0)
@@ -39,7 +40,7 @@ export default function TheInstitute({ content }: { content?: any }) {
             <div className="flex flex-col items-center text-center mb-16 gap-4 max-w-3xl mx-auto">
                 <h2 
                     className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold tracking-tighter text-white leading-[1.08]"
-                    dangerouslySetInnerHTML={{ __html: headline }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }}
                 />
                 <p className="text-white/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
                     {subtitle}
@@ -48,7 +49,7 @@ export default function TheInstitute({ content }: { content?: any }) {
 
             {/* 2-Column Cards Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 rounded-sm">
-                {platforms.map((platform: any, index: number) => {
+                {platforms.map((platform: Record<string, any>, index: number) => {
                     const isLast = index === platforms.length - 1
                     const domain = getDomain(platform.link_url)
 

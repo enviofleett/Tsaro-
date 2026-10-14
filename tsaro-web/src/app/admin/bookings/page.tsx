@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
 export default async function BookingsDashboard() {
@@ -29,7 +30,7 @@ export default async function BookingsDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {bookings.map((b: any) => (
+                {bookings.map((b: Record<string, any>) => (
                   <tr key={b.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-textMuted">
                       {new Date(b.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}

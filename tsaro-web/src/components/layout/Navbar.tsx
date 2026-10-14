@@ -1,21 +1,24 @@
 import Link from 'next/link'
 
 export default async function Navbar() {
-  let navLinks: any[] = []
+  let navLinks: Record<string, any>[] = []
 
   // Only attempt Supabase fetch if env vars are configured
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     try {
-      const { createClient } = await import('@/utils/supabase/server')
+      const { createClient } = await import('@/lib/supabase/server')
       const supabase = await createClient()
       const { data: menu } = await supabase.from('menus').select('id').eq('name', 'main_header').maybeSingle()
       if (menu) {
         const { data: items } = await supabase
           .from('menu_items')
-          .select('*')
+          .select('*, pages(slug)')
           .eq('menu_id', menu.id)
           .order('sort_order')
-        if (items) navLinks = items
+        if (items) navLinks = items.map(item => ({
+            ...item,
+            url: item.link_type === 'page' && item.pages ? '/' + item.pages.slug : (item.link_type === 'anchor' ? '#' + item.url.replace(/^#/, '') : item.url)
+          }))
       }
     } catch {
       // Supabase unavailable — fall through to static links

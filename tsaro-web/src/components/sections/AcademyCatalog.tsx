@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { submitAcademyBooking } from '@/app/actions/bookAcademy'
 
-export default function AcademyCatalog({ content = {} }: { content?: any }) {
+export default function AcademyCatalog({ content = {} }: { content?: Record<string, any> }) {
   const [filter, setFilter] = useState('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalState, setModalState] = useState<'form' | 'success'>('form')
@@ -54,7 +54,7 @@ export default function AcademyCatalog({ content = {} }: { content?: any }) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {programs.filter((p: any) => filter === 'all' || p.type === filter).map((p: any, i: number) => (
+          {programs.filter((p: Record<string, any>) => filter === 'all' || p.type === filter).map((p: Record<string, any>, i: number) => (
             <div key={i} className="bg-[#212126] border border-white/5 rounded-2xl overflow-hidden flex flex-col justify-between">
               <div>
                 <div className="h-56 relative">

@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth/auth';
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export default async function SettingsManager() {
@@ -8,6 +9,7 @@ export default async function SettingsManager() {
 
   async function createSetting(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     
     await supabase.from('site_settings').insert({
@@ -21,6 +23,7 @@ export default async function SettingsManager() {
 
   async function updateSetting(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     
     try {
@@ -37,6 +40,7 @@ export default async function SettingsManager() {
 
   async function deleteSetting(formData: FormData) {
     'use server'
+    await requireAdmin();
     const supabase = await createClient()
     await supabase.from('site_settings').delete().eq('id', formData.get('id'))
     revalidatePath('/admin/settings')
@@ -50,7 +54,7 @@ export default async function SettingsManager() {
       <div className="bg-charcoal border border-white/10 rounded-lg p-6 mb-8 capability-card">
         <h2 className="text-xl font-semibold mb-4 text-white">Add Global Setting</h2>
         <form action={createSetting} className="space-y-4">
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium text-textLight mb-1">Setting Key (e.g. contact_info)</label>
               <input type="text" name="key" required className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white focus:outline-none focus:border-brandRed" />
@@ -75,7 +79,7 @@ export default async function SettingsManager() {
         {settings?.map(setting => {
           
           if (setting.key === 'footer') {
-            const val = setting.value as any || {};
+            const val = (setting.value as Record<string, any>) || {};
             return (
               <div key={setting.id} className="bg-charcoal border border-white/10 rounded-lg p-6">
                 <div className="flex justify-between items-center mb-4">
@@ -86,6 +90,7 @@ export default async function SettingsManager() {
                 
                 <form action={async (formData) => {
                   'use server'
+    await requireAdmin();
                   const supabase = await createClient()
                   await supabase.from('site_settings').update({
                     value: {
@@ -112,7 +117,7 @@ export default async function SettingsManager() {
           }
 
           if (setting.key === 'contact_info') {
-            const val = setting.value as any || {};
+            const val = (setting.value as Record<string, any>) || {};
             return (
               <div key={setting.id} className="bg-charcoal border border-white/10 rounded-lg p-6">
                 <div className="flex justify-between items-center mb-4">
@@ -123,6 +128,7 @@ export default async function SettingsManager() {
                 
                 <form action={async (formData) => {
                   'use server'
+    await requireAdmin();
                   const supabase = await createClient()
                   await supabase.from('site_settings').update({
                     value: {
@@ -133,7 +139,7 @@ export default async function SettingsManager() {
                   }).eq('id', setting.id)
                   revalidatePath('/admin/settings')
                 }} className="space-y-4">
-                  <div className="flex gap-4">
+                  <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex-1">
                       <label className="block text-xs font-medium text-textLight mb-1">Email Address</label>
                       <input type="email" name="email" defaultValue={val.email} className="w-full px-4 py-2 bg-deepGray border border-white/10 rounded text-white" />

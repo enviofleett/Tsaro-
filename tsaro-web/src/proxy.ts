@@ -6,7 +6,7 @@ export async function proxy(request: NextRequest) {
   // Only run Supabase session logic if env vars are configured
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     try {
-      const { updateSession } = await import('@/utils/supabase/middleware')
+      const { updateSession } = await import('@/lib/supabase/middleware')
       response = await updateSession(request)
     } catch {
       // Supabase middleware failed — continue without session

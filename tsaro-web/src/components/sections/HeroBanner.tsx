@@ -1,4 +1,5 @@
 "use client";
+import { sanitizeHtml } from '@/lib/validation/sanitize';
 
 import { useMemo } from 'react';
 
@@ -17,11 +18,11 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
-export default function HeroBanner({ content }: { content?: any }) {
-  const headline = content?.headline || "";
-  const subheadline = content?.subheadline || "";
-  const image_url = content?.image_url || "";
-  const video_url = content?.video_url || "";
+export default function HeroBanner({ content }: { content?: Record<string, any> }) {
+  const headline = content?.heading || content?.headline || "";
+  const subheadline = content?.subheading || content?.subheadline || "";
+  const image_url = content?.image || content?.image_url || "";
+  const video_url = content?.videoUrl || content?.video_url || "";
 
   const youtubeId = useMemo(() => extractYouTubeId(video_url), [video_url]);
   const hasVideo = !!youtubeId;
@@ -62,7 +63,7 @@ export default function HeroBanner({ content }: { content?: any }) {
         <div className="relative z-10 max-w-7xl w-full mx-auto text-center flex flex-col items-center">
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-bold text-white tracking-tighter leading-[1.08] mb-6 drop-shadow-2xl" 
                 style={{textShadow: '0 4px 24px rgba(0,0,0,0.85)'}}
-                dangerouslySetInnerHTML={{ __html: headline }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(headline) }}
             />
 
             <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg" 
@@ -71,11 +72,11 @@ export default function HeroBanner({ content }: { content?: any }) {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full sm:w-auto">
-                <a href="#contact" className="btn-primary-red w-full sm:w-auto px-8 py-4 rounded-sm text-sm font-semibold tracking-widest uppercase text-center">
-                    Request a Briefing
+                <a href={content?.primaryCtaDest || "#contact"} className="btn-primary-red w-full sm:w-auto px-8 py-4 rounded-sm text-sm font-semibold tracking-widest uppercase text-center">
+                    {content?.primaryCtaLabel || "Request a Briefing"}
                 </a>
-                <a href="#capabilities" className="text-base font-bold text-white border-b-2 border-brandRed hover:border-white transition-colors pb-1">
-                    See What We Do
+                <a href={content?.secondaryCtaDest || "#capabilities"} className="text-base font-bold text-white border-b-2 border-brandRed hover:border-white transition-colors pb-1">
+                    {content?.secondaryCtaLabel || "See What We Do"}
                 </a>
             </div>
 

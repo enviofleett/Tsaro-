@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export default async function Footer() {
-  let footerData: any = null
+  let footerData: Record<string, any> | null = null
 
   try {
     const supabase = await createClient()

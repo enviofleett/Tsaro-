@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, memo } from 'react';
+import { memo } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -17,22 +17,11 @@ interface GlobeProps {
 }
 
 function Globe({ locations, activeIdx, onLocationClick }: GlobeProps) {
-  // Center and zoom state for rotation
-  const [center, setCenter] = useState<[number, number]>([20, 10]);
-  const [scale, setScale] = useState(150);
-
-  useEffect(() => {
-    if (activeIdx !== null && locations[activeIdx]) {
-      const loc = locations[activeIdx];
-      // react-simple-maps uses [lng, lat] for center
-      setCenter([loc.coords[1], loc.coords[0]]);
-      setScale(300);
-    } else {
-      // Default view showing Africa/Europe/Americas
-      setCenter([20, 10]);
-      setScale(150);
-    }
-  }, [activeIdx, locations]);
+  // Derive center and zoom directly from activeIdx
+  const center: [number, number] = (activeIdx !== null && locations[activeIdx])
+    ? [locations[activeIdx].coords[1], locations[activeIdx].coords[0]]
+    : [20, 10];
+  const scale = (activeIdx !== null && locations[activeIdx]) ? 300 : 150;
 
   return (
     <ComposableMap
@@ -62,7 +51,7 @@ function Globe({ locations, activeIdx, onLocationClick }: GlobeProps) {
                 default: { outline: 'none' },
                 hover: { fill: '#444', outline: 'none' },
                 pressed: { outline: 'none' },
-              } as any}
+              } as Record<string, unknown>}
             />
           ))
         }

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function WhereWeOperate({ content }: { content?: any }) {
+export default function WhereWeOperate({ content }: { content?: Record<string, any> }) {
   const headline = content?.headline || "";
   
   // Default fallback matching the new client mockup
@@ -11,7 +11,7 @@ export default function WhereWeOperate({ content }: { content?: any }) {
   ];
   
   const regions = (content?.locations && content.locations.length > 0) 
-    ? content.locations.map((loc: any, i: number) => ({ 
+    ? content.locations.map((loc: Record<string, any>, i: number) => ({ 
         ...loc, 
         details: loc.details || loc.address,
         image: loc.image || defaultImages[i % defaultImages.length] 
@@ -45,7 +45,7 @@ export default function WhereWeOperate({ content }: { content?: any }) {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {regions.map((region: any, idx: number) => (
+          {regions.map((region: Record<string, any>, idx: number) => (
             <div 
               key={idx}
               className={`relative h-[300px] sm:h-[400px] w-full group overflow-hidden ${!region.image ? 'bg-black border border-white/10' : ''}`}

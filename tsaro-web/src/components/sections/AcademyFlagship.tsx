@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { submitAcademyBooking } from '@/app/actions/bookAcademy'
 
-export default function AcademyFlagship({ content = {} }: { content?: any }) {
+export default function AcademyFlagship({ content = {} }: { content?: Record<string, any> }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalState, setModalState] = useState<'form' | 'success'>('form')
 

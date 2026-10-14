@@ -1,9 +1,15 @@
 "use server"
 
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
+import { checkRateLimit } from '@/lib/validation/rateLimit'
 
 export async function submitApplication(formData: FormData) {
   try {
+    const rateLimit = await checkRateLimit();
+    if (!rateLimit.success) {
+      return { success: false, error: rateLimit.error };
+    }
+
     const supabase = await createClient()
 
     const name = formData.get('name') as string
@@ -16,13 +22,34 @@ export async function submitApplication(formData: FormData) {
       return { success: false, error: 'All fields are required.' }
     }
 
-    // Ensure it's a PDF or small file
+    // Abuse Prevention: duplicate submission checking
+    const { data: existingApp } = await supabase
+      .from('career_applications')
+      .select('id')
+      .eq('email', email.trim())
+      .eq('role', role.trim())
+      .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()) // last 30 days
+      .maybeSingle()
+
+    if (existingApp) {
+      return { success: false, error: 'You have already applied for this role recently.' }
+    }
+
+    // Security Validation: Validate file type and extension
+    const allowedMimeTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedExtensions = ['pdf', 'doc', 'docx'];
+    const fileExt = cvFile.name.split('.').pop()?.toLowerCase() || '';
+
+    if (!allowedMimeTypes.includes(cvFile.type) || !allowedExtensions.includes(fileExt)) {
+      return { success: false, error: 'Invalid file format. Only PDF and Word documents are allowed.' }
+    }
+
+    // Ensure it's a small file (5MB limit)
     if (cvFile.size > 5 * 1024 * 1024) {
       return { success: false, error: 'CV must be less than 5MB.' }
     }
 
-    // 1. Upload CV to Supabase Storage
-    const fileExt = cvFile.name.split('.').pop()
+    // 1. Upload CV to Supabase Storage (cvs bucket)
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`
     const filePath = `applications/${fileName}`
 
@@ -34,35 +61,31 @@ export async function submitApplication(formData: FormData) {
       })
 
     if (uploadError) {
-      console.error('CV Upload Error:', uploadError)
-      return { success: false, error: 'Failed to upload CV. Please ensure the "cvs" storage bucket exists and is public.' }
+      return { success: false, error: 'Our system could not process the file upload at this time. Please try again later.' }
     }
 
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage.from('cvs').getPublicUrl(filePath)
-    const cvUrl = publicUrlData.publicUrl
+    // Do NOT generate a public URL. Store the internal path instead.
+    const internalPath = filePath;
 
     // 2. Insert record into career_applications table
     const { error: insertError } = await supabase
       .from('career_applications')
       .insert([
         {
-          name,
-          email,
-          phone,
-          role,
-          cv_url: cvUrl
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          role: role.trim(),
+          cv_url: internalPath
         }
       ])
 
     if (insertError) {
-      console.error('Insert Error:', insertError)
-      return { success: false, error: 'Failed to save application. Please ensure the career_applications table exists.' }
+      return { success: false, error: 'We encountered an issue saving your application. Please try again later.' }
     }
 
     return { success: true }
   } catch (err: any) {
-    console.error('Unexpected Error:', err)
-    return { success: false, error: err.message || 'An unexpected error occurred.' }
+    return { success: false, error: 'An unexpected system error occurred. Please try again later.' }
   }
 }
